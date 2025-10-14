@@ -1,174 +1,97 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir Surat Permintaan Penutupan Asuransi Pengangkutan Uang</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            padding: 20px;
-            margin: 0 auto;
-            max-width: 800px;
-        }
-        .header {
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .sub-header {
-            text-align: center;
-            margin-top: -10px;
-        }
-        .form-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        .form-table th,
-        .form-table td {
-            padding: 8px;
-            text-align: left;
-            border: 1px solid #000;
-        }
-        .form-table th {
-            width: 200px;
-        }
-        .form-table input[type="text"],
-        .form-table input[type="date"],
-        .form-table input[type="time"],
-        .form-table input[type="number"] {
-            width: 100%;
-            padding: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        .form-table .rate-input {
-            width: 80px;
-        }
-        .form-table .submit {
-            width: 100%;
-            padding: 10px;
-            margin-top: 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            font-size: 16px;
-        }
-    </style>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('content')
+
 <div class="container">
-    <div class="header">
-        ASKRIDA
-    </div>
-    <div class="sub-header">
-        PT. ASURANSI BANGUN ASKIRDA
-    </div>
+    <h1>Surat Permintaan Penutupan Asuransi Pengangkutan Uang</h1>
+    <h2>Angkutan Jalan Raya</h2>
 
-    <div class="header">
-        SURAT PERMINTAAN PENUTUPAN ASURANSI PENGANGKUTAN UANG
-    </div>
-
-    <table class="form-table">
+    <table class="table">
         <tr>
-            <th>No.</th>
-            <td><input type="text" name="no"></td>
-        </tr>
-        <tr>
-            <th>Tanggal</th>
-            <td><input type="date" name="tanggal"></td>
-        </tr>
-        <tr>
-            <th>Kepada Yth.</th>
-            <td><input type="text" name="kepada"></td>
-        </tr>
-        <tr>
-            <th>Asuransi Bangun Askida</th>
-            <td><input type="text" name="asuransi"></td>
-        </tr>
-        <tr>
-            <th>Dari</th>
-            <td><input type="text" name="dari"></td>
-        </tr>
-        <tr>
-            <th>Hal</th>
-            <td><input type="text" name="hal"></td>
-        </tr>
-        <tr>
-            <th>Up.</th>
-            <td><input type="text" name="up"></td>
-        </tr>
-        <tr>
-            <th>Nama Tertanggung</th>
-            <td><input type="text" name="nama_tertanggung"></td>
-        </tr>
-        <tr>
-            <th>Alamat Tertanggung</th>
-            <td><input type="text" name="alamat_tertanggung"></td>
-        </tr>
-        <tr>
-            <th>Waktu Berangkat</th>
-            <td><input type="date" name="waktu_berangkat">
-                <input type="time" name="jam_berangkat">
+            <td>No.</td>
+            <td>: {{ $cit->nomor_pengajuan }}</td>
+            <td>Tanggal</td>
+            <td>: {{ $cit->tanggal_pengajuan }}
             </td>
         </tr>
         <tr>
-            <th>Tiba</th>
-            <td><input type="date" name="tiba">
-                <input type="time" name="jam_tiba">
-            </td>
+            <td>Kepada Yth.</td>
+            <td>: Asuransi Bangun Askrida</td>
+            <td>Dari</td>
+            <td>: {{$cit->asal_surat}}</td>
         </tr>
         <tr>
-            <th>Tujuan</th>
-            <td><input type="text" name="tujuan"></td>
-        </tr>
-        <tr>
-            <th>Jarak Tempuh (Km)</th>
-            <td><input type="number" name="jarak_tempuh"></td>
-        </tr>
-        <tr>
-            <th>Nilai Pengiriman</th>
-            <td><input type="text" name="nilai_pengiriman"></td>
-        </tr>
-        <tr>
-            <th>Alat Angkut</th>
-            <td>
-                Merk: <input type="text" name="merk_angkut"><br>
-                Jenis: <input type="text" name="jenis_angkut"><br>
-                Nomor: <input type="text" name="nomor_angkut">
-            </td>
-        </tr>
-        <tr>
-            <th>Rate (%)</th>
-            <td><input type="number" class="rate-input" name="rate"></td>
-        </tr>
-        <tr>
-            <th>Petugas Bank</th>
-            <td>
-                Penanggung Jawab: <input type="text" name="penanggung_jawab"><br>
-                Staff/Satpam: <input type="text" name="staff_satpam">
-            </td>
-        </tr>
-        <tr>
-            <th>Petugas Kepolisian Bersenjata Api</th>
-            <td><input type="text" name="petugas_polisi_bersenjata_api"></td>
-        </tr>
-        <tr>
-            <th>Petugas Brimob</th>
-            <td><input type="text" name="petugas_brimob"></td>
-        </tr>
-        <tr>
-            <th>Minimal 2 Orang Anggota Polisi Bersenjata Api</th>
-            <td><input type="text" name="minimal_polisi_bersenjata_api"></td>
+            <td>Up.</td>
+            <td>: {{$cit->unit_tujuan}}</td>
+            <td>Hal</td>
+            <td>: Likuiditas</td>
         </tr>
     </table>
 
-    <button class="submit" type="submit">Kirim</button>
+    <p>Bersama ini Kami mengajukan permohonan penutupan CIT Insurance dengan kondisi sebagai berikut :</p>
+
+    <table class="form-table">
+        <tr>
+            <td class="form-label">1. Nama Tertanggung</td>
+            <td>{{$cit->nama_tertanggung}}</td>
+        </tr>
+        <tr>
+            <td class="form-label">2. Alamat Tertanggung</td>
+            <td>{{$cit->alamat_tertanggung}}</td>
+        </tr>
+        <tr>
+            <td class="form-label">3. Waktu Berangkat</td>
+            <td>Tanggal: {{$cit->tanggal_berangkat}}, Jam: {{$cit->jam_berangkat}} WIB/WIT</td>
+        </tr>
+        <tr>
+            <td class="form-label">4. Tiba</td>
+            <td>Tanggal: {{$cit->tanggal_tiba}}, Jam: {{$cit->jam_tiba}} WIB/WIT</td>
+        </tr>
+        <tr>
+            <td class="form-label">5. Tujuan</td>
+            <td>Dari: {{$cit->tujuan_dari}} Ke: {{$cit->tujuan_ke}}</td>
+        </tr>
+        <tr>
+            <td class="form-label">Jarak Tempuh</td>
+            <td>Dalam Kota/Luar Kota ±: {{$cit->jarak_tempuh}} Km</td>
+        </tr>
+        <tr>
+            <td class="form-label">6. Nilai Pengiriman</td>
+            <td>{{$cit->nilai_pengiriman}}</td>
+        </tr>
+        <tr>
+            <td class="form-label">7. Alat Angkut</td>
+            <td>Merk dan Jenis: {{$cit->alat_angkut_merk}} {{$cit->alat_angkut_jenis}}, Nomor Mobil: {{$cit->alat_angkut_nomor}}</td>
+        </tr>
+        <tr>
+            <td class="form-label">8. Rate</td>
+            <td>{{$cit->rate}} ‰</td>
+        </tr>
+        <tr>
+            <td class="form-label">9. Petugas Bank</td>
+            <td>Penanggung Jawab: {{$cit->petugas_bank_penanggung_jawab}}, Staff/Satpam: {{$cit->petugas_bank_staff}} pelaksana
+                {{$cit->petugas_bank_driver}} driver {{$cit->petugas_bank_satpam}} satpam</td>
+        </tr>
+        <tr>
+            <td class="form-label">10. Petugas Kepolisian bersenjata api</td>
+            <td>Polisi: {{$cit->petugas_polisi_bersenjata_api}} Orang, Brimob: {{$cit->petugas_polisi_brimob}} Orang, Minimal 2 Orang anggota polisi bersenjata api</td>
+        </tr>
+    </table>
+
+    <p>Demikian kami sampaikan, konfirmasi dinantikan dalam waktu dekat dan terima kasih atas kerjasamanya.</p>
+
+    <div class="footer">
+        <p>PT. Bank Jateng</p>
+        <p>Calon Tertanggung</p>
+    </div>
+
+    <div class="header">
+        <p>(…………………….)</p>
+    </div>
+
+    <div class="signature">
+        <p>Signature: ...................................</p>
+    </div>
+
 </div>
-</body>
-</html>
+@endsection

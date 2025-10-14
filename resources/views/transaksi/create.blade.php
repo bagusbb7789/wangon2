@@ -39,32 +39,35 @@
             </div>
 
             <div class="card mt-4">
-                <div class="card-header">Detail Transaksi <button type="button" id="add-detail" class="btn btn-success">Tambah Detail</button></div>
+                <div class="card-header">
+                    Detail Transaksi
+                    <button type="button" id="add-detail" class="btn btn-success">Tambah Detail</button>
+                </div>
                 <div class="card-body" id="details-wrapper">
-
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>Agunan</th>
-                                <th>Keterangan</th>
-                                <th>Status</th>
-                            </tr>
+                        <tr>
+                            <th>Agunan</th>
+                            <th>Keterangan</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td><select name="detail[0][id_agunan]" id="detail[0][id_agunan]" class="form-control" required>
-                                        <option value="">-- Pilih Agunan --</option>
-                                        @foreach ($agunan as $item)
-                                            <option value="{{ $item->id }}">{{ $item->nama_agunan }} ({{ $item->id }})</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td><input type="text" name="detail[0][keterangan]" class="form-control" required></td>
-                                <td><input type="text" name="detail[0][status]" class="form-control" required></td>
-                            </tr>
+                        <tbody id="details-body">
+                        <tr>
+                            <td><select name="detail[0][id_agunan]" id="detail[0][id_agunan]" class="form-control" required>
+                                    <option value="">-- Pilih Agunan --</option>
+                                    @foreach ($agunan as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama_agunan }} ({{ $item->id }})</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                            <td><input type="text" name="detail[0][keterangan]" class="form-control" required></td>
+                            <td><input type="text" name="detail[0][status]" class="form-control" required></td>
+                            <td><button type="button" class="btn btn-danger btn-remove">Hapus</button></td>
+                        </tr>
                         </tbody>
                     </table>
-
                 </div>
             </div>
             <button type="submit" class="btn btn-primary mt-4">Simpan Transaksi</button>
@@ -75,27 +78,32 @@
         let detailCount = 1;
 
         document.getElementById('add-detail').addEventListener('click', function () {
-            const wrapper = document.getElementById('details-wrapper');
+            const wrapper = document.getElementById('details-body');
             const content = `
-            <table class="table">
-            <tbody>
-            <tr>
-                <td><select name="detail[${detailCount}][id_agunan]" id="detail[${detailCount}][id_agunan]" class="form-control" required>
-                        <option value="">-- Pilih Agunan --</option>
-                        @foreach ($agunan as $item)
-                        <option value="{{ $item->id }}">{{ $item->nama_agunan }} ({{ $item->id }})</option>
-                        @endforeach
-                    </select>
-                </td>
-                <td><input type="text" name="detail[${detailCount}][keterangan]" class="form-control" required></td>
-                <td><input type="text" name="detail[${detailCount}][status]" class="form-control" required></td>
-                <td></td>
-            </tr>
-            </tbody>
-            </table>
-        `;
+                <tr>
+                    <td>
+                        <select name="detail[${detailCount}][id_agunan]" id="detail[${detailCount}][id_agunan]" class="form-control" required>
+                            <option value="">-- Pilih Agunan --</option>
+                            @foreach ($agunan as $item)
+            <option value="{{ $item->id }}">{{ $item->nama_agunan }} ({{ $item->id }})</option>
+                            @endforeach
+            </select>
+        </td>
+        <td><input type="text" name="detail[${detailCount}][keterangan]" class="form-control" required></td>
+                    <td><input type="text" name="detail[${detailCount}][status]" class="form-control" required></td>
+                    <td><button type="button" class="btn btn-danger btn-remove">Hapus</button></td>
+                </tr>
+            `;
             wrapper.insertAdjacentHTML('beforeend', content);
             detailCount++;
+        });
+
+        // Event delegation for removing a detail row
+        document.getElementById('details-wrapper').addEventListener('click', function (e) {
+            if (e.target && e.target.classList.contains('btn-remove')) {
+                const row = e.target.closest('tr');
+                row.remove();
+            }
         });
     </script>
 @endsection
