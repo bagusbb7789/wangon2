@@ -188,11 +188,6 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="rate">Daya Tahan Api</label>
-                            <input type="text" class="form-control" id="daya_tahan_api" name="daya_tahan_api" value="{{ old('daya_tahan_api') }}" required>
-                        </div>
-
-                        <div class="form-group">
                             <label for="rate">Brangkas Dapat di Pindah?</label>
                             <input type="text" class="form-control" id="apakah_dapat_dipindahkan" name="apakah_dapat_dipindahkan" value="{{ old('apakah_dapat_dipindahkan') }}" required>
                         </div>

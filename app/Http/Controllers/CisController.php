@@ -25,6 +25,7 @@ class CisController extends Controller
     public function create()
     {
         // Return the create form
+
         return view('cis.create');
     }
 
@@ -33,10 +34,12 @@ class CisController extends Controller
      */
     public function store(Request $request)
     {
+       //dd($request->all());
+
         // Validate input data
         $request->validate([
-            'jenis_polis' => 'required|string|max:255',
-            'nomor_polis' => 'required|string|max:255',
+            'jenis_polis' => 'nullable|string|max:255',
+            'nomor_polis' => 'nullable|string|max:255',
             'nama_tertanggung' => 'required|string|max:255',
             'no' => 'required|string|max:255',
             'asal_surat' => 'required|string|max:255',
@@ -47,7 +50,6 @@ class CisController extends Controller
             'nilai_pengangkutan' => 'required|numeric',
             'jangka_waktu_awal' => 'required|string',
             'jangka_waktu_akhir' => 'required|string',
-            'keterangan_lengkap' => 'required|string',
             'alamat_gedung' => 'required|string',
             'konstruksi_bangunan' => 'required|string',
             'sistem_pengamanan' => 'required|string',
@@ -71,8 +73,9 @@ class CisController extends Controller
             'jam_kerja_polisi' => 'required|string',
             'jam_kerja_calon_tertanggung_awal' => 'required|string',
             'jam_kerja_calon_tertanggung_akhir' => 'required|string',
-            'id_pimpinan' => 'required|string',
+            'id_pimpinan' => 'nullable|string',
             'catatan_lainnya' => 'nullable|string',
+            'rate_angkut' => 'required|string',
         ]);
 
         // Create a new CIS record
@@ -107,8 +110,8 @@ class CisController extends Controller
     {
         // Validate input data
         $request->validate([
-            'jenis_polis' => 'required|string|max:255',
-            'nomor_polis' => 'required|string|max:255',
+            'jenis_polis' => 'nullable|string|max:255',
+            'nomor_polis' => 'nullable|string|max:255',
             'nama_tertanggung' => 'required|string|max:255',
             'no' => 'required|string|max:255',
             'asal_surat' => 'required|string|max:255',
@@ -119,7 +122,6 @@ class CisController extends Controller
             'nilai_pengangkutan' => 'required|numeric',
             'jangka_waktu_awal' => 'required|string',
             'jangka_waktu_akhir' => 'required|string',
-            'keterangan_lengkap' => 'required|string',
             'alamat_gedung' => 'required|string',
             'konstruksi_bangunan' => 'required|string',
             'sistem_pengamanan' => 'required|string',
@@ -143,8 +145,9 @@ class CisController extends Controller
             'jam_kerja_polisi' => 'required|string',
             'jam_kerja_calon_tertanggung_awal' => 'required|string',
             'jam_kerja_calon_tertanggung_akhir' => 'required|string',
-            'id_pimpinan' => 'required|string',
+            'id_pimpinan' => 'nullable|string',
             'catatan_lainnya' => 'nullable|string',
+            'rate_angkut' => 'required|string',
         ]);
 
         // Update the CIS record

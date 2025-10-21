@@ -42,7 +42,7 @@
                                 <td>{{ $item->tanggal_pengajuan }}</td>
                                 <td>{{ $item->tujuan_surat }}</td>
                                 <td class="text-center">
-                                    <a href="{{ route('cit.show', $item->id) }}" class="btn btn-info btn-sm">
+                                    <a href="{{ route('cit.view', $item->id) }}" class="btn btn-info btn-sm">
                                         <i class="fas fa-eye"></i> Lihat
                                     </a>
                                     <a href="{{ route('cit.edit', $item->id) }}" class="btn btn-warning btn-sm">

@@ -31,9 +31,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('pinjaman', PinjamanController::class);
     Route::resource('agunan', AgunanController::class);
     Route::resource('cit', CitController::class);
+    Route::resource('cis', CisController::class);
     Route::get('/cit/view/{cit}', [CitController::class, 'view'])->name('cit.view');
     Route::get('/cit/surat/{cit}', [CitController::class, 'surat'])->name('cit.surat');
-    Route::resource('cis', CisController::class);
     Route::resource('transaksi', TransaksiController::class);
     Route::resource('detailtransaksi', DetailtransaksiController::class);
 });

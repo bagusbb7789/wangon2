@@ -28,7 +28,6 @@ class Cis extends Model
         'nilai_pengangkutan',
         'jangka_waktu_awal',
         'jangka_waktu_akhir',
-        'keterangan_lengkap',
         'alamat_gedung',
         'konstruksi_bangunan',
         'sistem_pengamanan',

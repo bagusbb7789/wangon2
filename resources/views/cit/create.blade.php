@@ -10,7 +10,14 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Create a New CIT Record</h3>
+            <div>
+                <h3 class="card-title">Create a New CIT Record</h3>
+            </div>
+            <div>
+                <a href="{{ route('cit.index') }}" class="btn btn-info btn-sm">
+                    <i class="fas fa-arrow-left"></i> Kembali
+                </a>
+            </div>
         </div>
         <div class="card-body">
             <form action="{{ route('cit.store') }}" method="POST">
