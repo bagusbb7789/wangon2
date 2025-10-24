@@ -34,7 +34,7 @@
                         <td>{{ $record->asal_surat }}</td>
                         <td>{{ $record->tanggal }}</td>
                         <td>
-                            <a href="{{ route('cis.show', $record->id) }}" class="btn btn-info btn-sm">View</a>
+                            <a href="{{ route('cis.view', $record->id) }}" class="btn btn-info btn-sm">View</a>
                             <a href="{{ route('cis.edit', $record->id) }}" class="btn btn-warning btn-sm">Edit</a>
                             <form action="{{ route('cis.destroy', $record->id) }}" method="POST" style="display: inline-block;">
                                 @csrf

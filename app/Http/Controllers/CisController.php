@@ -97,11 +97,15 @@ class CisController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Cis $cis)
+    public function edit($id)
     {
-        // Return edit form with CIS data
+        $cis = Cis::find($id);
+        if (!$cis) {
+            return redirect()->route('cis.index')->with('error', 'CIS not found.');
+        }
         return view('cis.edit', compact('cis'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -109,6 +113,8 @@ class CisController extends Controller
     public function update(Request $request, Cis $cis)
     {
         // Validate input data
+        //dd($request->all());
+
         $request->validate([
             'jenis_polis' => 'nullable|string|max:255',
             'nomor_polis' => 'nullable|string|max:255',
@@ -167,5 +173,15 @@ class CisController extends Controller
 
         // Redirect back with success message
         return redirect()->route('cis.index')->with('success', 'CIS record deleted successfully!');
+    }
+
+    public function view(Cis $cis)
+    {
+        return view('cis.view', compact('cis'));
+    }
+
+    public function surat(Cis $cis)
+    {
+        return view('cis.surat', compact('cis'));
     }
 }
