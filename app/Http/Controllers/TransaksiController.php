@@ -102,4 +102,14 @@ class TransaksiController extends Controller
 
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui bersama detail transaksi.');
     }
+
+    public function view(Transaksi $transaksi)
+    {
+        return view('transaksi.view', compact('transaksi'));
+    }
+
+    public function cetak(Transaksi $transaksi)
+    {
+        return view('transaksi.cetak', compact('transaksi'));
+    }
 }
