@@ -13,8 +13,8 @@
                     <a href="{{ route('cit.index') }}" class="btn btn-warning btn-sm">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </a>
-                    <a href="{{ route('cit.create') }}" class="btn btn-danger btn-sm">
-                        <i class="fas fa-plus"></i> Create Baru
+                    <a href="{{ route('cit.edit', $cit->id) }}" class="btn btn-danger btn-sm">
+                        <i class="fas fa-user-edit"></i> Update
                     </a>
                 </div>
             </div>
@@ -58,11 +58,11 @@
                     </tr>
                     <tr>
                         <th>3. Waktu Berangkat</th>
-                        <td>Tanggal: {{ $cit->tanggal_berangkat }}, Jam: {{ $cit->jam_berangkat }} WIB/WIT</td>
+                        <td>Tanggal: {{ $cit->tanggal_berangkat }}, Jam: {{ $cit->jam_berangkat }} WIB</td>
                     </tr>
                     <tr>
                         <th>4. Tiba</th>
-                        <td>Tanggal: {{ $cit->tanggal_tiba }}, Jam: {{ $cit->jam_tiba }} WIB/WIT</td>
+                        <td>Tanggal: {{ $cit->tanggal_tiba }}, Jam: {{ $cit->jam_tiba }} WIB</td>
                     </tr>
                     <tr>
                         <th>5. Tujuan</th>
@@ -70,7 +70,7 @@
                     </tr>
                     <tr>
                         <th>6. Jarak Tempuh</th>
-                        <td>Dalam Kota/Luar Kota ±: {{ $cit->jarak_tempuh }} Km</td>
+                        <td>{{$cit->jenis_pengiriman}} ±: {{ $cit->jarak_tempuh }} Km</td>
                     </tr>
                     <tr>
                         <th>7. Nilai Pengiriman</th>

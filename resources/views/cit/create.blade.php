@@ -36,7 +36,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="unit_tujuan">Unit Tujuan</label>
+                            <label for="unit_tujuan">Up.</label>
                             <input type="text" class="form-control" id="unit_tujuan" name="unit_tujuan" required>
                         </div>
                     </div>
@@ -180,7 +180,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="alat_angkut_nomor">Alat Angkut Nomor</label>
+                        <label for="alat_angkut_nomor">Nomor Mobil</label>
                         <input type="text" class="form-control" id="alat_angkut_nomor" name="alat_angkut_nomor" required>
                     </div>
                     <div class="form-group">
@@ -220,12 +220,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="petugas_polisi_bersenjata_api">Petugas Polisi Bersenjata Api</label>
+                        <label for="petugas_polisi_bersenjata_api">Jumlah Polisi</label>
                         <input type="text" class="form-control" id="petugas_polisi_bersenjata_api" name="petugas_polisi_bersenjata_api" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="petugas_polisi_brimob">Petugas Polisi Brimob</label>
+                        <label for="petugas_polisi_brimob">Jumlah Brimob</label>
                         <input type="text" class="form-control" id="petugas_polisi_brimob" name="petugas_polisi_brimob" required>
                     </div>
                 </div>

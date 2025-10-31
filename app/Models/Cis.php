@@ -2,25 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cis extends Model
 {
     use HasFactory;
 
-    protected $table = 'cis'; // Database table name
+    protected $table = 'cis';
+    protected $primaryKey = 'id';
+    public $timestamps = true; // Akan jadi true jika kolom created_at & updated_at otomatis diisi Laravel
 
-    // Define fillable attributes for mass assignment
     protected $fillable = [
         'jenis_polis',
         'nomor_polis',
         'nama_tertanggung',
         'no',
         'asal_surat',
-        'up',
-        'khasanah',
-        'rate_angkut',
         'tanggal',
         'dari',
         'hal',
@@ -28,6 +26,7 @@ class Cis extends Model
         'nilai_pengangkutan',
         'jangka_waktu_awal',
         'jangka_waktu_akhir',
+        'keterangan_lengkap',
         'alamat_gedung',
         'konstruksi_bangunan',
         'sistem_pengamanan',
@@ -53,14 +52,10 @@ class Cis extends Model
         'jam_kerja_calon_tertanggung_akhir',
         'id_pimpinan',
         'catatan_lainnya',
+        'created_at',
+        'updated_at',
+        'up',
+        'khasanah',
+        'rate_angkut',
     ];
-
-    // Optional: Enable timestamps if they are included in the table
-    public $timestamps = true;
-
-    // Define primary key explicitly (optional, for clarity)
-    protected $primaryKey = 'id';
-
-    // Define key type (if different from default `int`)
-    protected $keyType = 'int';
 }

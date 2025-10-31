@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('jenispinjaman', JenispinjamanController::class);
     Route::resource('pinjaman', PinjamanController::class);
     Route::resource('agunan', AgunanController::class);
+    Route::get('cit/cetak/', [CitController::class, 'cetak'])->name('cit.cetak');
+    Route::get('cis/laporan/', [CisController::class, 'laporan'])->name('cis.laporan');
     Route::resource('cit', CitController::class);
     Route::resource('cis', CisController::class);
     Route::get('/cit/view/{cit}', [CitController::class, 'view'])->name('cit.view');

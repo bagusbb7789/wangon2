@@ -9,7 +9,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            <a href="{{ route('cis.index') }}" class="btn btn-secondary">Back</a>
+            <a href="{{ route('cis_lama.index') }}" class="btn btn-secondary">Back</a>
         </div>
         <div class="card-body">
             <table class="table table-bordered">

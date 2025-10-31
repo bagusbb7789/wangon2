@@ -8,10 +8,10 @@
                     <h1 class="h4 mb-0">Surat Permintaan Penutupan Asuransi Penyimpanan Uang</h1>
                 </div>
                 <div align="right">
-                    <a href="{{ route('cis.index') }}" class="btn btn-warning btn-sm">
+                    <a href="{{ route('cis_lama.index') }}" class="btn btn-warning btn-sm">
                         <i class="fas fa-arrow-left"></i> Kembali
                     </a>
-                    <a href="{{ route('cis.edit', $cis->id) }}" class="btn btn-danger btn-sm">
+                    <a href="{{ route('cis_lama.edit', $cis->id) }}" class="btn btn-danger btn-sm">
                         <i class="fas fa-plus"></i> Update
                     </a>
                 </div>
@@ -235,7 +235,7 @@
                     <div class="col-6 text-center">
                         <p>PT. Bank Jateng</p>
                         <p><strong>Calon Tertanggung</strong></p>
-                        <a href="{{ route('cis.surat',$cis->id) }}" target="_blank" class="btn btn-primary btn-sm">
+                        <a href="{{ route('cis_lama.surat',$cis->id) }}" target="_blank" class="btn btn-primary btn-sm">
                             <i class="fas fa-print"></i> Cetak
                         </a>
                         <p>(…………………….)</p>

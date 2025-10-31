@@ -10,9 +10,24 @@ class CitController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+
+    public function index(Request $request)
     {
-        $cit = Cit::all(); // Fetch all CIT records
+        $search = $request->input('search');
+
+        $query = \App\Models\Cit::query();
+
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nomor_pengajuan', 'ILIKE', "%{$search}%")
+                    ->orWhere('tujuan_surat', 'ILIKE', "%{$search}%");
+            });
+        }
+
+        $cit = $query->orderBy('id', 'desc')->paginate(20);
+
+        // Tetap bawa 'search' di pagination link
+        $cit->appends($request->only('search'));
 
         return view('cit.index', compact('cit'));
     }
@@ -32,7 +47,7 @@ class CitController extends Controller
     {
         $request->validate([
             'nomor_pengajuan' => 'required|string|max:255',
-            'tanggal_pengajuan' => 'required|string|max:255',
+            'tanggal_pengajuan' => 'required|date',
             'tujuan_surat' => 'required|string|max:255',
             'unit_tujuan' => 'required|string|max:255',
             'asal_surat' => 'required|string|max:255',
@@ -96,7 +111,10 @@ class CitController extends Controller
      */
     public function update(Request $request, Cit $cit)
     {
-        $request->validate([
+      //  dd($request);
+        //dd($request->all());
+
+      /*  $request->validate([
             'nomor_pengajuan' => 'required|string|max:255',
             'tanggal_pengajuan' => 'required|string|max:255',
             'tujuan_surat' => 'required|string|max:255',
@@ -125,11 +143,11 @@ class CitController extends Controller
             'petugas_polisi_bersenjata_api' => 'required|string|max:255',
             'petugas_polisi_brimob' => 'required|string|max:255',
             'id_pimpinan' => 'required|string|max:255',
-        ]);
+        ]);*/
 
         $cit->update($request->all());
 
-        return redirect()->route('cit.index')->with('success', 'CIT record updated successfully!');
+        return redirect()->route('cit.view', $cit->id)->with('success', 'CIT record updated successfully!');
     }
 
     /**
@@ -140,5 +158,23 @@ class CitController extends Controller
         $cit->delete();
 
         return redirect()->route('cit.index')->with('success', 'CIT record deleted successfully!');
+    }
+
+    public function cetak(Request $request)
+    {
+        $bulan = $request->input('bulan');
+        $tahun = $request->input('tahun');
+
+
+        $data = Cit::whereMonth('tanggal_pengajuan', $bulan)
+            ->whereYear('tanggal_pengajuan', $tahun)
+            ->orderBy('tanggal_pengajuan')
+            ->get();
+
+        return view('cit.laporan', [
+            'data' => $data,
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+        ]);
     }
 }

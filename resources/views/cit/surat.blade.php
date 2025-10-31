@@ -4,80 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surat Permintaan Penutupan Asuransi Pengangkutan Uang</title>
-    <style>
-        @page {
-            size: A4;
-            margin: 20mm;
-        }
+    <head>
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+        <!--membuat style tombol CETAK html-->
+        <style media="print">
+            .noprint{
+                display: none;
+            }
+        </style>
 
-        .container {
-            width: 100%;
-            margin: 0 auto;
-            padding: 20mm;
-            box-sizing: border-box;
+    </head>
+    <style type="text/css">
+        body{
+            font-size: 12pt;
+            margin:auto;
+            width: 960px;
+            font-family: Arial;
         }
-
-        h1, h2 {
-            text-align: center;
-        }
-
-        .table {
-            width: 100%;
-            margin-top: 5px;
-            border-collapse: collapse;
-        }
-
-        .table th, .table td {
-            border: 1px solid black;
-            padding: 5px;
-            text-align: left;
-        }
-
-        .table th {
-            background-color: #f2f2f2;
-        }
-
-        .form-label {
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .form-table {
-            width: 100%;
-            margin-top: 20px;
-        }
-
-        .form-table td {
-            padding: 5px;
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        .header {
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        .signature {
-            margin-top: 100px;
-            text-align: center;
-        }
-
-        /* Center the page content */
-        .content {
-            width: 100%;
+        table{
+            font-size: 12pt;
+            margin:auto;
+            font-family: Arial;
+            width: 960px;
         }
     </style>
-</head>
 <body>
 
 <div class="container">
@@ -89,7 +39,7 @@
             <td>No.</td>
             <td>: {{ $cit->nomor_pengajuan }}</td>
             <td>Tanggal</td>
-            <td>: DD/MM/YYYY</td>
+            <td>: {{ \Carbon\Carbon::parse($cit->tanggal_pengajuan)->locale('id')->isoFormat('DD MMMM Y') }}</td>
         </tr>
         <tr>
             <td>Kepada Yth.</td>
@@ -121,12 +71,12 @@
         <tr>
             <td class="form-label">3. Waktu Berangkat</td>
             <td>:</td>
-            <td>Tanggal: {{ \Carbon\Carbon::parse($cit->tanggal_berangkat)->format('d-m-Y') }}, Jam: {{ $cit->jam_berangkat }} WIB/WIT</td>
+            <td>Tanggal: {{ \Carbon\Carbon::parse($cit->tanggal_berangkat)->locale('id')->isoFormat('DD MMMM Y') }}, Jam: {{ $cit->jam_berangkat }} WIB/WIT</td>
         </tr>
         <tr>
             <td class="form-label">4. Tiba</td>
             <td>:</td>
-            <td>Tanggal: {{\Carbon\Carbon::parse($cit->tanggal_tiba)->format('d-m-Y') }}, Jam: {{ $cit->jam_tiba }} WIB/WIT</td>
+            <td>Tanggal: {{\Carbon\Carbon::parse($cit->tanggal_tiba)->locale('id')->isoFormat('DD MMMM Y') }}, Jam: {{ $cit->jam_tiba }} WIB/WIT</td>
         </tr>
         <tr>
             <td class="form-label">5. Tujuan</td>
@@ -141,7 +91,7 @@
         <tr>
             <td class="form-label">Jarak Tempuh</td>
             <td>:</td>
-            <td>Dalam Kota/Luar Kota ± : {{ $cit->jarak_tempuh }} Km</td>
+            <td>{{$cit->jenis_pengiriman}} ± : {{ $cit->jarak_tempuh }} Km</td>
         </tr>
         <tr>
             <td class="form-label">6. Nilai Pengiriman</td>
@@ -213,6 +163,12 @@
         <p>(…………………….)</p>
     </div>
 </div>
-
+<br>
+<div style="text-align:left;">
+    <button  class="noprint" onclick="window.print()" >
+        <img src="" alt="logo" class="img-responsive" ,/>
+        CETAK SEKARANG...
+    </button>
+</div>
 </body>
 </html>
