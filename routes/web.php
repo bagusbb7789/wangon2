@@ -10,6 +10,8 @@ use App\Http\Controllers\CitController;
 use App\Http\Controllers\CisController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DetailtransaksiController;
+use App\Http\Controllers\BalasanCisController;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -24,6 +26,7 @@ Route::post('/login', [LoginController::class, 'handleLogin'])->name('login');
 
 
 Route::middleware('auth')->group(function () {
+    Route::resource('balasancis',BalasanCisController::class);
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('pimpinan', PimpinanController::class);

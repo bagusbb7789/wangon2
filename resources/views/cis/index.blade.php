@@ -59,7 +59,7 @@
                         <th>Nomor Polis</th>
                         <th>Tanggal</th>
                         <th>Nilai Pengangkutan</th>
-                        <th style="width:200px;">Actions</th>
+                        <th style="width:300px;">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -77,7 +77,12 @@
                                     @method('DELETE')
                                     <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete</button>
                                 </form>
-                                <a href="#" class="btn btn-primary btn-sm">Balasan</a>
+                                <button class="btn btn-primary btn-sm"
+                                        data-toggle="modal"
+                                        data-target="#modalBalasan"
+                                        data-cis-id="{{ $record->id }}">
+                                    Balasan
+                                </button>
                             </td>
                         </tr>
                     @empty
@@ -91,3 +96,55 @@
         </div>
     </div>
 @stop
+
+<!-- Modal -->
+<div class="modal fade" id="modalBalasan" tabindex="-1" role="dialog" aria-labelledby="modalBalasanLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form method="POST" action="{{ route('balasancis.store') }}" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="id_cis" id="modal_id_cis">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalBalasanLabel">Tambah Balasan CIS</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Nomor Balasan</label>
+                        <input type="text" class="form-control" name="nomor_balasan" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tanggal Balasan</label>
+                        <input type="date" class="form-control" name="tanggal_balasan" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Keterangan</label>
+                        <textarea class="form-control" name="keterangan" rows="2" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>File (opsional)</label>
+                        <input type="file" class="form-control-file" name="nama_file">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Balasan</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@push('scripts')
+    <script>
+        $('#modalBalasan').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var cisId = button.data('cis-id')
+            var modal = $(this)
+            modal.find('#modal_id_cis').val(cisId)
+        })
+    </script>
+@endpush
