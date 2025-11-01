@@ -24,7 +24,7 @@ class CitController extends Controller
             });
         }
 
-        $cit = $query->orderBy('id', 'desc')->paginate(20);
+        $cit = $query->with('citbalasan')->orderBy('id', 'desc')->paginate(20);
 
         // Tetap bawa 'search' di pagination link
         $cit->appends($request->only('search'));

@@ -10,7 +10,28 @@ class CisController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
+    {
+        // Mulai query CIS
+        $query = Cis::with('cisbalasan'); // Tambahkan eager loading untuk 'cisbalasan'
+
+        // Filter berdasarkan input pencarian
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nomor_polis', 'like', "%$search%")
+                    ->orWhere('nama_tertanggung', 'like', "%$search%")
+                    ->orWhere('tanggal', 'like', "%$search%");
+            });
+        }
+
+        // Ambil data dengan relasi cisbalasan
+        $cis = $query->orderBy('id', 'desc')->paginate(20);
+
+        return view('cis.index', compact('cis'));
+    }
+   /* public function indexLama(Request $request)
     {
         $query = Cis::query();
 
@@ -26,7 +47,7 @@ class CisController extends Controller
         $cis = $query->orderBy('id', 'desc')->paginate(20);
 
         return view('cis.index', compact('cis'));
-    }
+    }*/
 
     /**
      * Show the form for creating a new resource.

@@ -31,6 +31,10 @@
 <body>
 
 <div class="container">
+    <div style="text-align:center;">
+        <img src="{{ asset('images/askrida.png') }}" alt="Logo Perusahaan" style="width:170px; margin-bottom:15px;">
+    </div>
+
     <p align="center">Surat Permintaan Penutupan Asuransi Pengangkutan Uang</p>
     <p align="center">Angkutan Jalan Raya</p>
 

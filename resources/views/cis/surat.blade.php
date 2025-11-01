@@ -33,6 +33,9 @@
 <table>
     <tr>
     <td style=" width:800px;" align="center" >
+        <div style="text-align:center;">
+            <img src="{{ asset('images/askrida.png') }}" alt="Logo Perusahaan" style="width:170px; margin-bottom:15px;">
+        </div>
         <b>
             <div align="center" style="font-size:16pt">SURAT PERMINTAAN PENUTUPAN ASURANSI PENYIMPANAN UANG</div>
         </b>

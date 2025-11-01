@@ -58,4 +58,10 @@ class Cis extends Model
         'khasanah',
         'rate_angkut',
     ];
+
+    public function cisbalasan()
+    {
+        return $this->hasMany(Cisbalasan::class, 'cisid', 'id'); // 'cisid' adalah foreign key di Cisbalasan, 'id' adalah primary key pada Cis
+    }
+
 }

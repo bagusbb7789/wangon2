@@ -10,7 +10,9 @@ use App\Http\Controllers\CitController;
 use App\Http\Controllers\CisController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\DetailtransaksiController;
-use App\Http\Controllers\BalasanCisController;
+use App\Http\Controllers\CisbalasanController;
+use App\Http\Controllers\CitbalasanController;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +28,7 @@ Route::post('/login', [LoginController::class, 'handleLogin'])->name('login');
 
 
 Route::middleware('auth')->group(function () {
-    Route::resource('balasancis',BalasanCisController::class);
+
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('pimpinan', PimpinanController::class);
@@ -37,6 +39,8 @@ Route::middleware('auth')->group(function () {
     Route::get('cis/laporan/', [CisController::class, 'laporan'])->name('cis.laporan');
     Route::resource('cit', CitController::class);
     Route::resource('cis', CisController::class);
+    Route::resource('cisbalasan', CisbalasanController::class);
+    Route::resource('citbalasan', CitbalasanController::class);
     Route::get('/cit/view/{cit}', [CitController::class, 'view'])->name('cit.view');
     Route::get('/cit/surat/{cit}', [CitController::class, 'surat'])->name('cit.surat');
     Route::get('/cis/surat/{cis}', [CisController::class, 'surat'])->name('cis.surat');

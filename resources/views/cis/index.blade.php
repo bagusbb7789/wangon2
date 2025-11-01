@@ -59,6 +59,8 @@
                         <th>Nomor Polis</th>
                         <th>Tanggal</th>
                         <th>Nilai Pengangkutan</th>
+                        <th>Jumlah Balasan</th>
+                        <th>Dokumen Balasan</th>
                         <th style="width:300px;">Actions</th>
                     </tr>
                     </thead>
@@ -69,6 +71,25 @@
                             <td>{{ $record->nomor_polis }}</td>
                             <td>{{ $record->tanggal }}</td>
                             <td>{{ 'Rp ' . number_format($record->nilai_pengangkutan, 0, ',', '.') }}</td>
+                            <td>{{ $record->cisbalasan->count() }}</td> <!-- Menghitung jumlah balasan -->
+                            <td>
+                                @if ($record->cisbalasan->isNotEmpty())
+                                    @foreach ($record->cisbalasan as $balasan)
+                                        <div>
+                                            <strong>{{ $balasan->nomorbalasan }}</strong> ({{ $balasan->tanggalbalasan }}) <br>
+                                            @if ($balasan->namafile)
+                                                <a href="{{ asset('uploadcis/' . $balasan->namafile) }}" target="_blank" class="btn btn-sm btn-info">
+                                                    Lihat Dokumen
+                                                </a>
+                                            @else
+                                                <span class="text-muted">Tidak ada dokumen</span>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <span class="text-muted">Tidak ada balasan</span>
+                                @endif
+                            </td>
                             <td>
                                 <a href="{{ route('cis.view', $record->id) }}" class="btn btn-info btn-sm">View</a>
                                 <a href="{{ route('cis.edit', $record->id) }}" class="btn btn-warning btn-sm">Edit</a>
@@ -77,10 +98,7 @@
                                     @method('DELETE')
                                     <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete</button>
                                 </form>
-                                <button class="btn btn-primary btn-sm"
-                                        data-toggle="modal"
-                                        data-target="#modalBalasan"
-                                        data-cis-id="{{ $record->id }}">
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal" data-id="{{ $record->id }}">
                                     Balasan
                                 </button>
                             </td>
@@ -95,56 +113,60 @@
             </div>
         </div>
     </div>
-@stop
 
-<!-- Modal -->
-<div class="modal fade" id="modalBalasan" tabindex="-1" role="dialog" aria-labelledby="modalBalasanLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form method="POST" action="{{ route('balasancis.store') }}" enctype="multipart/form-data">
-            @csrf
-            <input type="hidden" name="id_cis" id="modal_id_cis">
+    <!-- Modal -->
+    <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="createForm" action="{{ route('cisbalasan.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createModalLabel">Tambah Balasan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Input tersembunyi untuk cisid -->
+                        <input type="hidden" name="cisid" id="cisIdInput">
 
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalBalasanLabel">Tambah Balasan CIS</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                        <div class="form-group">
+                            <label for="nomorbalasan">Nomor Balasan</label>
+                            <input type="text" name="nomorbalasan" id="nomorbalasan" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tanggalbalasan">Tanggal Balasan</label>
+                            <input type="date" name="tanggalbalasan" id="tanggalbalasan" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="keterangan">Keterangan</label>
+                            <input type="text" name="keterangan" id="keterangan" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="namafile">Upload Dokumen</label>
+                            <input type="file" name="namafile" id="namafile" class="form-control" accept=".pdf,.doc,.docx,.xlsx">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Nomor Balasan</label>
-                        <input type="text" class="form-control" name="nomor_balasan" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Tanggal Balasan</label>
-                        <input type="date" class="form-control" name="tanggal_balasan" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Keterangan</label>
-                        <textarea class="form-control" name="keterangan" rows="2" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>File (opsional)</label>
-                        <input type="file" class="form-control-file" name="nama_file">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan Balasan</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
-@push('scripts')
+
     <script>
-        $('#modalBalasan').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget)
-            var cisId = button.data('cis-id')
-            var modal = $(this)
-            modal.find('#modal_id_cis').val(cisId)
-        })
+        document.addEventListener('DOMContentLoaded', function () {
+            const createModal = document.getElementById('createModal');
+            createModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget; // Tombol yang membuka modal
+                const cisId = button.getAttribute('data-id'); // Ambil ID dari tombol
+                const cisIdInput = document.getElementById('cisIdInput'); // Input tersembunyi untuk cisid
+                cisIdInput.value = cisId; // Setel nilai ID ke input tersembunyi
+            });
+        });
     </script>
-@endpush
+@stop

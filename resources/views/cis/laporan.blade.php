@@ -37,7 +37,7 @@
     @forelse($cis ?? [] as $row)
         <tr>
             <td>
-
+                {{ $row->tanggal ?? '-' }}
             </td>
             <td>{{ $row->nilai_pengangkutan ?? '-' }}</td>
             <td>{{ $row->nilai_pengangkutan ?? '-' }}</td>

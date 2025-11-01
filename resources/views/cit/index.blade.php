@@ -72,6 +72,7 @@
                             <th>Pertanggungan</th>
                             <th>Dari</th>
                             <th>Tujuan</th>
+                            <th>Balasan</th>
                             <th>Aksi</th>
                         </tr>
                         </thead>
@@ -84,6 +85,26 @@
                                 <td>{{ 'Rp ' . number_format($item->nilai_pengiriman, 0, ',', '.') }}</td>
                                 <td>{{ $item->asal_surat }}</td>
                                 <td>{{ $item->tujuan_surat }}</td>
+                                <td>
+                                    @if($item->citbalasan->count())
+                                        <ul class="mb-0 pl-3">
+                                            @foreach($item->citbalasan as $balasan)
+                                                <li>
+                                                    <strong>{{ $balasan->nomorbalasan }}</strong>
+                                                    <br>Tanggal: {{ $balasan->tanggalbalasan }}
+                                                    <br>
+                                                    @if($balasan->namafile)
+                                                        <a href="{{ asset('storage/'.$balasan->namafile) }}" target="_blank">Lihat File</a>
+                                                    @endif
+                                                    <br>
+                                                    <em>{{ $balasan->keterangan }}</em>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        <span class="text-muted">Belum ada</span>
+                                    @endif
+                                </td>
                                 <td class="text-center">
                                     <a href="{{ route('cit.view', $item->id) }}" class="btn btn-info btn-sm">
                                         <i class="fas fa-eye"></i> Lihat
@@ -98,7 +119,10 @@
                                             <i class="fas fa-trash"></i> Hapus
                                         </button>
                                     </form>
-                                    <a href="#" class="btn btn-primary btn-sm" target="_blank">Balasan</a>
+                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#citbalasanModal"
+                                            data-citid="{{ $item->id }}">
+                                        Balasan
+                                    </button>
                                 </td>
                             </tr>
                         @empty
@@ -119,4 +143,53 @@
 
         </div>
     </div>
+
+    <!-- Citbalasan Modal -->
+    <div class="modal fade" id="citbalasanModal" tabindex="-1" aria-labelledby="citbalasanModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="citbalasanForm" action="{{ route('citbalasan.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="citid" id="citid"> <!-- This is crucial for setting the 'citid' -->
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nomorbalasan">Nomor Balasan</label>
+                            <input type="text" name="nomorbalasan" id="nomorbalasan" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tanggalbalasan">Tanggal Balasan</label>
+                            <input type="date" name="tanggalbalasan" id="tanggalbalasan" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="keterangan">Keterangan</label>
+                            <input type="text" name="keterangan" id="keterangan" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="namafile">Nama File</label>
+                            <input type="file" name="namafile" id="namafile" class="form-control" accept=".pdf,.doc,.docx,.xlsx">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const citbalasanModal = document.getElementById('citbalasanModal');
+            citbalasanModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const citId = button.getAttribute('data-citid');
+                const citIdInput = document.getElementById('citid'); // <-- menggunakan id, bukan selector
+                citIdInput.value = citId;
+            });
+        });
+    </script>
+
+
+
 @endsection

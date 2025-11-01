@@ -49,4 +49,9 @@ class Cit extends Model
     // Define the primary key (optional, for clarity)
     protected $primaryKey = 'id';
     protected $keyType = 'int';
+
+    public function citbalasan()
+        {
+            return $this->hasMany(Citbalasan::class, 'citid', 'id');
+        }
 }
