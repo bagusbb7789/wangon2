@@ -2,63 +2,63 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detailtransaksi;
 use Illuminate\Http\Request;
 
 class DetailtransaksiController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $detailtransaksis = Detailtransaksi::all();
+        return view('detailtransaksi.index', compact('detailtransaksis'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('detailtransaksi.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            // gantikan sesuai struktur tabel detailtransaksis
+            'id_agunan' => 'required',
+            'keterangan' => 'required',
+            // dst.
+        ]);
+        Detailtransaksi::create($validated);
+        return redirect()->route('detailtransaksi.index')->with('success', 'Berhasil menambah data.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $detailtransaksi = Detailtransaksi::findOrFail($id);
+        return view('detailtransaksi.show', compact('detailtransaksi'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $detailtransaksi = Detailtransaksi::findOrFail($id);
+        return view('detailtransaksi.edit', compact('detailtransaksi'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $validated = $request->validate([
+            // sesuai field model
+            'id_agunan' => 'required',
+            'keterangan' => 'required',
+            // dst.
+        ]);
+        $detailtransaksi = Detailtransaksi::findOrFail($id);
+        $detailtransaksi->update($validated);
+        return redirect()->route('detailtransaksi.index')->with('success', 'Berhasil mengubah data.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $detailtransaksi = Detailtransaksi::findOrFail($id);
+        $detailtransaksi->delete();
+        return redirect()->route('detailtransaksi.index')->with('success', 'Berhasil menghapus data.');
     }
 }

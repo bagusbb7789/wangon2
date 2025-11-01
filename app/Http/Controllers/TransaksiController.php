@@ -6,7 +6,7 @@ use App\Models\Agunan;
 use Illuminate\Http\Request;
 use App\Models\Pinjaman;
 use App\Models\Transaksi;
-use App\Models\DetailTransaksi;
+use App\Models\Detailtransaksi;
 
 class TransaksiController extends Controller
 {
@@ -32,6 +32,7 @@ class TransaksiController extends Controller
     public function store(Request $request)
     {
         // Validasi data utama transaksi
+       // dd($request->all());
         $request->validate([
             'id_pinjaman' => 'required|string|max:255',
             'nomor_peminjam' => 'required|string|max:255',

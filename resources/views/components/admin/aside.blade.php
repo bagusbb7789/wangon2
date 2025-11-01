@@ -52,7 +52,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{route('transaksi.create')}}" class="nav-link">
+                    <a href="{{route('transaksi.index')}}" class="nav-link">
                         <i class="nav-icon fas fa-inbox"></i>
                         <p>
                             Dokumen Credit
@@ -60,7 +60,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item menu-open">
+                <li class="nav-item menu-close">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-database"></i>
                         <p>
