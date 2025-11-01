@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Citbalasan;
 use App\Models\Cit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CitbalasanController extends Controller
 {
@@ -54,7 +55,7 @@ class CitbalasanController extends Controller
             'namafile' => $filePath, // Save the file path
         ]);
 
-        return redirect()->route('citbalasan.index')
+        return redirect()->route('cit.index')
             ->with('success', 'Citbalasan successfully added.');
     }
 
@@ -121,7 +122,7 @@ class CitbalasanController extends Controller
 
         $citbalasan->delete();
 
-        return redirect()->route('citbalasan.index')
+        return redirect()->route('cit.index')
             ->with('success', 'Citbalasan successfully deleted.');
     }
 

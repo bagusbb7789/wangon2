@@ -33,13 +33,13 @@
                 <div class="col-md-6 text-md-end">
                     <form action="{{ route('cis.laporan') }}" method="GET" class="d-flex" target="_blank">
                         <select name="bulan" class="form-control me-2" required style="max-width:120px;">
-                            <option value="">Bulan</option>
+                            <option value="">Pilih Bulan</option>
                             @foreach(range(1,12) as $b)
                                 <option value="{{ $b }}">{{ DateTime::createFromFormat('!m', $b)->format('F') }}</option>
                             @endforeach
                         </select>
                         <select name="tahun" class="form-control me-2" required style="max-width:100px;">
-                            <option value="">Tahun</option>
+                            <option value="">Pilih Tahun</option>
                             @foreach(range(date('Y')-5, date('Y')) as $y)
                                 <option value="{{ $y }}">{{ $y }}</option>
                             @endforeach
@@ -59,7 +59,6 @@
                         <th>Nomor Polis</th>
                         <th>Tanggal</th>
                         <th>Nilai Pengangkutan</th>
-                        <th>Jumlah Balasan</th>
                         <th>Dokumen Balasan</th>
                         <th style="width:300px;">Actions</th>
                     </tr>
@@ -71,7 +70,6 @@
                             <td>{{ $record->nomor_polis }}</td>
                             <td>{{ $record->tanggal }}</td>
                             <td>{{ 'Rp ' . number_format($record->nilai_pengangkutan, 0, ',', '.') }}</td>
-                            <td>{{ $record->cisbalasan->count() }}</td> <!-- Menghitung jumlah balasan -->
                             <td>
                                 @if ($record->cisbalasan->isNotEmpty())
                                     @foreach ($record->cisbalasan as $balasan)
@@ -81,13 +79,20 @@
                                                 <a href="{{ asset('uploadcis/' . $balasan->namafile) }}" target="_blank" class="btn btn-sm btn-info">
                                                     Lihat Dokumen
                                                 </a>
+                                                <form action="{{ route('cisbalasan.destroy', $balasan->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete</button>
+                                                </form>
+                                            <br>
+                                                <em>{{ $balasan->keterangan }}</em>
                                             @else
                                                 <span class="text-muted">Tidak ada dokumen</span>
                                             @endif
                                         </div>
                                     @endforeach
                                 @else
-                                    <span class="text-muted">Tidak ada balasan</span>
+                                    <span class="text-muted">Balasan Belum ada</span>
                                 @endif
                             </td>
                             <td>

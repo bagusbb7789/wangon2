@@ -11,15 +11,17 @@
                     <card title="Daftar CIT">Daftar Nominatif Cash In Transit</card>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-6">
+                    <div class="row mb-3 justify-content-between align-items-end">
+                        <div class="col-md-6">
                             {{-- Search Form --}}
                             <form action="{{ route('cit.index') }}" method="GET" class="form-inline mb-3">
                                 <div class="input-group">
                                     <input type="text" name="search" class="form-control" placeholder="Cari Nomor atau Tujuan Surat..." value="{{ request('search') }}">
                                     <div class="input-group-append">
-                                        <button class="btn btn-secondary" type="submit">Cari</button>
-                                        <a href="{{ route('cit.create') }}" class="btn btn-warning btn-sm">Tambah CIT Baru</a>
+                                        <button class="btn btn-primary" type="submit">Cari</button>
+                                        <a href="{{ route('cis.create') }}" class="btn btn-success">
+                                            <i class="fas fa-plus"></i> Tambah
+                                        </a>
                                     </div>
                                 </div>
                             </form>
@@ -33,12 +35,11 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="col-sm-12 col-md-6">
-                            <div class="col-md-6">
+                        <div class="col-md-6 text-md-end">
                                 {{-- Form Filter Cetak Laporan Perbulan --}}
                                 <form action="{{ route('cit.cetak') }}" method="GET" class="form-inline" target="_blank">
                                     <div class="input-group">
-                                        <select name="bulan" class="form-control" required>
+                                        <select name="bulan" class="form-control me-2" required>
                                             <option value="">Pilih Bulan</option>
                                             @foreach(range(1,12) as $b)
                                                 <option value="{{ $b }}" {{ request('bulan') == $b ? 'selected' : '' }}>
@@ -46,21 +47,18 @@
                                                 </option>
                                             @endforeach
                                         </select>
-                                        <select name="tahun" class="form-control" required>
+                                        <select name="tahun" class="form-control me-2" required>
                                             <option value="">Pilih Tahun</option>
                                             @foreach(range(date('Y')-5, date('Y')) as $y)
                                                 <option value="{{ $y }}" {{ request('tahun') == $y ? 'selected' : '' }}>{{ $y }}</option>
                                             @endforeach
                                         </select>
-                                        <div class="input-group-append">
-                                            <button class="btn btn-success btn-sm" type="submit">
-                                                <i class="fas fa-print"></i> Cetak Laporan
-                                            </button>
-                                        </div>
+                                        <button class="btn btn-success" type="submit">
+                                            <i class="fas fa-print"></i> Ekstrak Laporan
+                                        </button>
                                     </div>
                                 </form>
                             </div>
-                        </div>
                     </div>
                     <div class="row">
                     <table class="table table-bordered table-striped table-hover">
@@ -89,20 +87,23 @@
                                     @if($item->citbalasan->count())
                                         <ul class="mb-0 pl-3">
                                             @foreach($item->citbalasan as $balasan)
-                                                <li>
-                                                    <strong>{{ $balasan->nomorbalasan }}</strong>
-                                                    <br>Tanggal: {{ $balasan->tanggalbalasan }}
-                                                    <br>
+                                                    <strong>{{ $balasan->nomorbalasan }}</strong> ({{ $balasan->tanggalbalasan }}) <br>
                                                     @if($balasan->namafile)
-                                                        <a href="{{ asset('storage/'.$balasan->namafile) }}" target="_blank">Lihat File</a>
-                                                    @endif
+                                                        <a href="{{ asset('storage/'.$balasan->namafile) }}" target="_blank" class="btn btn-sm btn-info">Lihat Dokumen</a>
+                                                    <form action="{{ route('citbalasan.destroy', $balasan->id) }}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete</button>
+                                                    </form>
                                                     <br>
                                                     <em>{{ $balasan->keterangan }}</em>
-                                                </li>
+                                                @else
+                                                    <span class="text-muted">Tidak ada dokumen</span>
+                                                @endif
                                             @endforeach
                                         </ul>
                                     @else
-                                        <span class="text-muted">Belum ada</span>
+                                        <span class="text-muted">Balasan Belum ada</span>
                                     @endif
                                 </td>
                                 <td class="text-center">

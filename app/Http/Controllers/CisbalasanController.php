@@ -52,7 +52,7 @@ class CisbalasanController extends Controller
         // Simpan data ke database
         Cisbalasan::create($data);
 
-        return redirect()->route('cisbalasan.index')->with('success', 'Cisbalasan created successfully.');
+        return redirect()->route('cis.index')->with('success', 'Cisbalasan created successfully.');
     }
 
 
@@ -113,6 +113,6 @@ class CisbalasanController extends Controller
     public function destroy(Cisbalasan $cisbalasan)
     {
         $cisbalasan->delete();
-        return redirect()->route('cisbalasan.index')->with('success', 'Cisbalasan deleted successfully.');
+        return redirect()->route('cis.index')->with('success', 'Cisbalasan deleted successfully.');
     }
 }

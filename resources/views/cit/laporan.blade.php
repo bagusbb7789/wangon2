@@ -3,10 +3,37 @@
 <head>
     <title>Laporan CIT Bulan {{ $bulan }} Tahun {{ $tahun }}</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ddd; padding: 8px; }
-        th { background-color: #f4f4f4; }
+        @page {
+            size: A4 landscape;
+            margin: 15mm 20mm 15mm 20mm;
+        }
+        html, body {
+            width: 297mm;
+            min-height: 210mm;
+            margin: 0 auto;
+            padding: 0;
+            background: #fff;
+            box-sizing: border-box;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #eee;
+        }
+        .header-row {
+            margin-bottom: 25px;
+        }
     </style>
 </head>
 <body>
