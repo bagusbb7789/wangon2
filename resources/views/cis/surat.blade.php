@@ -32,7 +32,7 @@
 </style>
 <table>
     <tr>
-    <td style=" width:800px;" align="center" >
+    <td style=" width:900px;" align="center" >
         <div style="text-align:center;">
             <img src="{{ asset('images/askrida.png') }}" alt="Logo Perusahaan" style="width:170px; margin-bottom:15px;">
         </div>
@@ -42,7 +42,7 @@
     </td>
     </tr>
     <tr>
-        <td style=" width:800px;">
+        <td style=" width:900px;">
             <div align="left" style="font-size:12pt">Bersama ini Kami mengajukan permohonan penutupan CIS Insurance dengan kondisi sebagai berikut :</div>
         </td>
     </tr>
@@ -96,21 +96,21 @@
     <table>
          <tr>
             <td style="width:200px">
-                <div align="left" style="font-size:12pt">2. Alamat Tertanggung</div>
+                <div style="font-size:12pt">2. Alamat Tertanggung</div>
             </td>
             <td>:</td>
             <td colspan="3">{{$cis->alamat_tertanggung}}</td>
         </tr>
         <tr>
             <td style="width:200px">
-                <div align="left" style="font-size:12pt">3. Nilai Pertanggungan</div>
+                <div style="font-size:12pt">3. Nilai Pertanggungan</div>
             </td>
             <td>:</td>
             <td colspan="3">{{$cis->nilai_pengangkutan}}</td>
         </tr>
         <tr>
             <td style="width:200px">
-                <div align="left" style="font-size:12pt">4. Jangka Waktu</div>
+                <div style="font-size:12pt">4. Jangka Waktu</div>
             </td>
             <td>:</td>
             <td></td>
@@ -119,21 +119,21 @@
         </tr>
         <tr>
             <td style="width:200px">
-                <div align="left" style="font-size:12pt">5. Khasanah</div>
+                <div style="font-size:12pt">5. Khasanah</div>
             </td>
             <td>:</td>
             <td colspan="3">{{$cis->khasanah}}</td>
         </tr>
         <tr>
             <td style="width:200px">
-                <div align="left" style="font-size:12pt">6. Rate</div>
+                <div style="font-size:12pt">6. Rate</div>
             </td>
             <td>:</td>
             <td colspan="3">{{$cis->rate}}</td>
         </tr>
         <tr>
             <td colspan="5">
-                <div align="left" style="font-size:12pt">
+                <div style="font-size:12pt">
                     7. Keterangan lengkap mengenai gedung / ruang dimana almari brankas/kluis berada :
                 </div>
             </td>
@@ -282,44 +282,43 @@
     </table>
     <table class="table table-striped">
         <tr>
-            <td style="width:40px">14. Jam kerja calon tertanggung</td>
+            <td style="width:415px">14. Jam kerja calon tertanggung</td>
             <td>:</td>
-            <td></td>
             <td>{{$cis->jam_kerja_calon_tertanggung_awal}} sd {{$cis->jam_kerja_calon_tertanggung_akhir}}</td>
             <td> WIB</td>
         </tr>
         <tr>
-            <td>15. Catatan lain-lain</td>
+            <td style="width:415px">15. Catatan lain-lain</td>
             <td>:</td>
-            <td colspan="2">{{$cis->catatan_lainnya}}</td>
+            <td>{{$cis->catatan_lainnya}}</td>
+            <td></td>
         </tr>
     </table>
     <p>Keterangan-keterangan tersebut diatas dibuat dengan sejujurnya dan sesuai dengan keadaan sebenarnya
         dan akan diguanakan sebagai dasar serta merupakan bagian dari polis yang diterbitkan</p>
     <p>Demikian kami sampaikan, konfirmasi dinantikan dalam waktu dekat dan terima kasih atas kerjasamanya</p>
-    <div class="row mt-12">
-        <div class="col-6 text-center">
-
-        </div>
-        <div class="col-6 text-center">
-            <p>PT. Bank Jateng</p>
-            <p><strong>Calon Tertanggung</strong></p>
-            <a href="{{ route('cis.surat',$cis->id) }}" target="_blank" class="btn btn-primary btn-sm">
-                <i class="fas fa-print"></i> Cetak
-            </a>
-            <p>(…………………….)</p>
-        </div>
-    </div>
-
-
-<!--membuat tombol CETAK pada report html-->
-<br><br>
-<div style="text-align:left;">
-    <button  class="noprint" onclick="window.print()" >
-        <img src="" alt="logo" class="img-responsive" ,/>
-        CETAK SEKARANG...
-    </button>
+    <table class="form-table">
+        <tr>
+            <td style="width: 500px;"></td>
+            <td style="width: 500px; text-align: center;">PT. Bank Jateng</td>
+        </tr>
+        <tr>
+            <td style="width: 500px;"></td>
+            <td style="width: 500px; text-align: center;">Calon Tertanggung</td>
+        </tr>
+        <tr>
+            <td style="width: 500px;"></td>
+            <td style="width: 500px; text-align: center;">
+                <button  class="noprint" onclick="window.print()" >
+                    CETAK SEKARANG...
+                </button>
+            </td>
+        </tr>
+        <tr style="height: 150px;">
+            <td style="width: 500px;"></td>
+            <td style="width: 500px; text-align: center;">(…………………….)</td>
+        </tr>
+    </table>
 </div>
-<br><br>
 </body>
 </html>

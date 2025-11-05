@@ -103,7 +103,13 @@
                                             @endforeach
                                         </ul>
                                     @else
-                                        <span class="text-muted">Balasan Belum ada</span>
+                                        <ul class="mb-0 pl-3">
+                                            <span class="text-muted">Balasan Belum ada</span><br>
+                                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#citbalasanModal"
+                                                    data-citid="{{ $item->id }}">
+                                                Buat Balasan
+                                            </button>
+                                        </ul>
                                     @endif
                                 </td>
                                 <td class="text-center">
@@ -120,10 +126,6 @@
                                             <i class="fas fa-trash"></i> Hapus
                                         </button>
                                     </form>
-                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#citbalasanModal"
-                                            data-citid="{{ $item->id }}">
-                                        Balasan
-                                    </button>
                                 </td>
                             </tr>
                         @empty

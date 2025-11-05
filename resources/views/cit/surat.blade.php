@@ -16,13 +16,13 @@
     </head>
     <style type="text/css">
         body{
-            font-size: 12pt;
+            font-size: 14pt;
             margin:auto;
             width: 960px;
             font-family: Arial;
         }
         table{
-            font-size: 12pt;
+            font-size: 14pt;
             margin:auto;
             font-family: Arial;
             width: 960px;
@@ -32,26 +32,26 @@
 
 <div class="container">
     <div style="text-align:center;">
-        <img src="{{ asset('images/askrida.png') }}" alt="Logo Perusahaan" style="width:170px; margin-bottom:15px;">
+        <img src="{{ asset('images/askrida.png') }}" alt="Logo Perusahaan" style="width:170px; margin-bottom:5px;">
     </div>
 
-    <p align="center">Surat Permintaan Penutupan Asuransi Pengangkutan Uang</p>
-    <p align="center">Angkutan Jalan Raya</p>
+    <p style="text-align: center; font-size: 16pt; font-weight: bold; ">Surat Permintaan Penutupan Asuransi Pengangkutan Uang</p>
+    <p style="text-align: center; font-size: 16pt; font-weight: bold; ">Angkutan Jalan Raya</p>
 
-    <table class="table">
-        <tr>
+    <table class="table" style="width: 100%; border: 1px solid black ; border-collapse: collapse;">
+        <tr style="border: 1px solid black ; border-collapse: collapse;">
             <td>No.</td>
             <td>: {{ $cit->nomor_pengajuan }}</td>
             <td>Tanggal</td>
             <td>: {{ \Carbon\Carbon::parse($cit->tanggal_pengajuan)->locale('id')->isoFormat('DD MMMM Y') }}</td>
         </tr>
-        <tr>
+        <tr style="border: 1px solid black ; border-collapse: collapse;">
             <td>Kepada Yth.</td>
             <td>: Asuransi Bangun Askrida</td>
             <td>Dari</td>
             <td>: {{ $cit->asal_surat }}</td>
         </tr>
-        <tr>
+        <tr style="border: 1px solid black ; border-collapse: collapse;">
             <td>Up.</td>
             <td>: {{ $cit->unit_tujuan }}</td>
             <td>Hal</td>
@@ -75,12 +75,12 @@
         <tr>
             <td class="form-label">3. Waktu Berangkat</td>
             <td>:</td>
-            <td>Tanggal: {{ \Carbon\Carbon::parse($cit->tanggal_berangkat)->locale('id')->isoFormat('DD MMMM Y') }}, Jam: {{ $cit->jam_berangkat }} WIB/WIT</td>
+            <td>Tanggal: {{ \Carbon\Carbon::parse($cit->tanggal_berangkat)->locale('id')->isoFormat('DD MMMM Y') }}, Jam: {{ $cit->jam_berangkat }} WIB</td>
         </tr>
         <tr>
             <td class="form-label">4. Tiba</td>
             <td>:</td>
-            <td>Tanggal: {{\Carbon\Carbon::parse($cit->tanggal_tiba)->locale('id')->isoFormat('DD MMMM Y') }}, Jam: {{ $cit->jam_tiba }} WIB/WIT</td>
+            <td>Tanggal: {{\Carbon\Carbon::parse($cit->tanggal_tiba)->locale('id')->isoFormat('DD MMMM Y') }}, Jam: {{ $cit->jam_tiba }} WIB</td>
         </tr>
         <tr>
             <td class="form-label">5. Tujuan</td>
@@ -93,7 +93,7 @@
             <td>Ke : {{ $cit->tujuan_ke }}</td>
         </tr>
         <tr>
-            <td class="form-label">Jarak Tempuh</td>
+            <td class="form-label">  Jarak Tempuh</td>
             <td>:</td>
             <td>{{$cit->jenis_pengiriman}} ± : {{ $cit->jarak_tempuh }} Km</td>
         </tr>
@@ -158,21 +158,28 @@
 
     <p>Demikian kami sampaikan, konfirmasi dinantikan dalam waktu dekat dan terima kasih atas kerjasamanya.</p>
 
-    <div class="footer">
-        <p>PT. Bank Jateng</p>
-        <p>Calon Tertanggung</p>
-    </div>
-
-    <div class="header">
-        <p>(…………………….)</p>
-    </div>
-</div>
-<br>
-<div style="text-align:left;">
-    <button  class="noprint" onclick="window.print()" >
-        <img src="" alt="logo" class="img-responsive" ,/>
-        CETAK SEKARANG...
-    </button>
+    <table class="form-table">
+        <tr>
+            <td style="width: 500px;"></td>
+            <td style="width: 500px; text-align: center;">PT. Bank Jateng</td>
+        </tr>
+        <tr>
+            <td style="width: 500px;"></td>
+            <td style="width: 500px; text-align: center;">Calon Tertanggung</td>
+        </tr>
+        <tr>
+            <td style="width: 500px;"></td>
+            <td style="width: 500px; text-align: center;">
+                <button  class="noprint" onclick="window.print()" >
+                    CETAK SEKARANG...
+                </button>
+            </td>
+        </tr>
+        <tr style="height: 150px;">
+            <td style="width: 500px;"></td>
+            <td style="width: 500px; text-align: center;">(…………………….)</td>
+        </tr>
+    </table>
 </div>
 </body>
 </html>

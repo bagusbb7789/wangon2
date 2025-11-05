@@ -92,7 +92,12 @@
                                         </div>
                                     @endforeach
                                 @else
-                                    <span class="text-muted">Balasan Belum ada</span>
+                                    <ul class="mb-0 pl-3">
+                                        <span class="text-muted">Balasan Belum ada</span><br>
+                                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal" data-id="{{ $record->id }}">
+                                            Buat Balasan
+                                        </button>
+                                    </ul>
                                 @endif
                             </td>
                             <td>
@@ -103,9 +108,6 @@
                                     @method('DELETE')
                                     <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete</button>
                                 </form>
-                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#createModal" data-id="{{ $record->id }}">
-                                    Balasan
-                                </button>
                             </td>
                         </tr>
                     @empty
