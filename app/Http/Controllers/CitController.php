@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pimpinan;
 use App\Models\Cit;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class CitController extends Controller
@@ -15,7 +17,7 @@ class CitController extends Controller
     {
         $search = $request->input('search');
 
-        $query = \App\Models\Cit::query();
+        $query = \App\Models\Cit::with(['citbalasan', 'biayacit']);
 
         if ($search) {
             $query->where(function ($q) use ($search) {
@@ -24,7 +26,7 @@ class CitController extends Controller
             });
         }
 
-        $cit = $query->with('citbalasan')->orderBy('id', 'desc')->paginate(20);
+        $cit = $query->orderBy('id', 'desc')->paginate(20);
 
         // Tetap bawa 'search' di pagination link
         $cit->appends($request->only('search'));
@@ -37,7 +39,8 @@ class CitController extends Controller
      */
     public function create()
     {
-        return view('cit.create');
+        $pimpinans = Pimpinan::all();
+        return view('cit.create', compact('pimpinans'));
     }
 
     /**
@@ -103,7 +106,8 @@ class CitController extends Controller
      */
     public function edit(Cit $cit)
     {
-        return view('cit.edit', compact('cit'));
+        $pimpinans = Pimpinan::all();
+        return view('cit.edit', compact('cit', 'pimpinans'));
     }
 
     /**
@@ -162,19 +166,22 @@ class CitController extends Controller
 
     public function cetak(Request $request)
     {
+        $request->validate([
+            'bulan' => 'required|integer|min:1|max:12',
+            'tahun' => 'required|integer|min:2000|max:2100',
+        ]);
+
         $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
 
-
-        $data = Cit::whereMonth('tanggal_pengajuan', $bulan)
+        $data = Cit::with('biayacit')->whereMonth('tanggal_pengajuan', $bulan)
             ->whereYear('tanggal_pengajuan', $tahun)
             ->orderBy('tanggal_pengajuan')
             ->get();
 
-        return view('cit.laporan', [
-            'data' => $data,
-            'bulan' => $bulan,
-            'tahun' => $tahun,
-        ]);
+        // Load view dan data ke dalam PDF
+        $pdf = Pdf::loadView('cit.laporan', compact('data', 'bulan', 'tahun'));
+        // Atur nama file dan unduh
+        return $pdf->download('laporan-cit-' . $bulan . '-' . $tahun . '.pdf');
     }
 }

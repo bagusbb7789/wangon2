@@ -22,12 +22,14 @@ class DetailtransaksiController extends Controller
     {
         $validated = $request->validate([
             // gantikan sesuai struktur tabel detailtransaksis
+            'id_transaksi' => 'required',
             'id_agunan' => 'required',
             'keterangan' => 'required',
+            'status' => 'required',
             // dst.
         ]);
         Detailtransaksi::create($validated);
-        return redirect()->route('detailtransaksi.index')->with('success', 'Berhasil menambah data.');
+        return redirect()->route('transaksi.index')->with('success', 'Berhasil menambah data.');
     }
 
     public function show($id)

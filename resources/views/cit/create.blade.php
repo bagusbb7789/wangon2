@@ -188,8 +188,14 @@
                         <input type="number" step="0.01" class="form-control" id="rate" name="rate" required>
                     </div>
                     <div class="form-group">
-                        <label for="id_pimpinan">ID Pimpinan</label>
-                        <input type="text" class="form-control" id="id_pimpinan" name="id_pimpinan" required>
+                        <label for="id_pimpinan">Penandatangan</label>
+                        <select name="id_pimpinan" id="id_pimpinan" class="form-control" required>
+                            <option value="">Pilih Pimpinan</option>
+                            {{-- Diasumsikan $pimpinans di-pass dari controller --}}
+                            @foreach($pimpinans as $pimpinan)
+                                <option value="{{ $pimpinan->id }}">{{ $pimpinan->nama }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -205,17 +211,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="petugas_bank_staff">Petugas Bank Staff</label>
+                        <label for="petugas_bank_staff">JumlH Staff Bank</label>
                         <input type="text" class="form-control" id="petugas_bank_staff" name="petugas_bank_staff" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="petugas_bank_satpam">Petugas Bank Satpam</label>
+                        <label for="petugas_bank_satpam">Jumlah Satpam Bank</label>
                         <input type="text" class="form-control" id="petugas_bank_satpam" name="petugas_bank_satpam" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="petugas_bank_driver">Petugas Bank Driver</label>
+                        <label for="petugas_bank_driver">Jumlah Driver</label>
                         <input type="text" class="form-control" id="petugas_bank_driver" name="petugas_bank_driver" required>
                     </div>
 

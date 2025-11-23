@@ -19,7 +19,7 @@
                                     <input type="text" name="search" class="form-control" placeholder="Cari Nomor atau Tujuan Surat..." value="{{ request('search') }}">
                                     <div class="input-group-append">
                                         <button class="btn btn-primary" type="submit">Cari</button>
-                                        <a href="{{ route('cis.create') }}" class="btn btn-success">
+                                        <a href="{{ route('cit.create') }}" class="btn btn-success">
                                             <i class="fas fa-plus"></i> Tambah
                                         </a>
                                     </div>
@@ -71,6 +71,7 @@
                             <th>Dari</th>
                             <th>Tujuan</th>
                             <th>Balasan</th>
+                            <th>Biaya</th>
                             <th>Aksi</th>
                         </tr>
                         </thead>
@@ -112,6 +113,31 @@
                                         </ul>
                                     @endif
                                 </td>
+                                <td>
+                                    @if($item->biayacit->count())
+                                        <ul class="mb-0 pl-3">
+                                            @foreach($item->biayacit as $biaya)
+                                                <li>
+                                                    <strong>{{ $biaya->namabiaya }}:</strong>
+                                                    {{ 'Rp ' . number_format($biaya->nominal, 0, ',', '.') }}
+                                                    <form action="{{ route('biayacit.destroy', $biaya->id) }}" method="POST" class="d-inline">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-link text-danger p-0" onclick="return confirm('Anda yakin ingin menghapus biaya ini?');" style="font-size: 0.8rem;">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @else
+                                        <span class="text-muted">Biaya Belum ada</span><br>
+                                    @endif
+                                    <button class="btn btn-success btn-sm mt-2" data-bs-toggle="modal"
+                                            data-bs-target="#biayacitModal"
+                                            data-citid="{{ $item->id }}">
+                                        <i class="fas fa-plus"></i> Tambah Biaya
+                                    </button>
+                                </td>
                                 <td class="text-center">
                                     <a href="{{ route('cit.view', $item->id) }}" class="btn btn-info btn-sm">
                                         <i class="fas fa-eye"></i> Lihat
@@ -130,7 +156,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center">Tidak ada data ditemukan.</td>
+                                <td colspan="6" class="text-center">Tidak ada data ditemukan.</td>
                             </tr>
                         @endforelse
                         </tbody>
@@ -181,6 +207,41 @@
         </div>
     </div>
 
+    <!-- Biayacit Modal -->
+    <div class="modal fade" id="biayacitModal" tabindex="-1" aria-labelledby="biayacitModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="biayacitForm" action="{{ route('biayacit.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="biayacitModalLabel">Tambah Biaya CIT</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="id_cit" id="id_cit_biaya">
+                        <div class="form-group mb-3">
+                            <label for="namabiaya">Nama Biaya</label>
+                            <input type="text" name="namabiaya" id="namabiaya" class="form-control" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="nominal">Nominal</label>
+                            <input type="number" name="nominal" id="nominal" class="form-control" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="keterangan_biaya">Keterangan</label>
+                            <textarea name="keterangan" id="keterangan_biaya" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const citbalasanModal = document.getElementById('citbalasanModal');
@@ -190,6 +251,15 @@
                 const citIdInput = document.getElementById('citid'); // <-- menggunakan id, bukan selector
                 citIdInput.value = citId;
             });
+
+            const biayacitModal = document.getElementById('biayacitModal');
+            biayacitModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget;
+                const citId = button.getAttribute('data-citid');
+                const citIdInput = document.getElementById('id_cit_biaya');
+                citIdInput.value = citId;
+            });
+
         });
     </script>
 

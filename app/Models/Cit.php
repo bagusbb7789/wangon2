@@ -54,4 +54,9 @@ class Cit extends Model
         {
             return $this->hasMany(Citbalasan::class, 'citid', 'id');
         }
+
+    public function biayacit()
+    {
+        return $this->hasMany(Biayacit::class, 'id_cit', 'id');
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cis;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class CisController extends Controller
@@ -14,7 +15,7 @@ class CisController extends Controller
     public function index(Request $request)
     {
         // Mulai query CIS
-        $query = Cis::with('cisbalasan'); // Tambahkan eager loading untuk 'cisbalasan'
+        $query = Cis::with(['cisbalasan', 'biayacis']); // Eager load 'cisbalasan' dan 'biayacis'
 
         // Filter berdasarkan input pencarian
         if ($request->filled('search')) {
@@ -136,12 +137,15 @@ class CisController extends Controller
         $tahun = $request->tahun;
 
         // Ambil data sesuai bulan dan tahun
-        $cis = Cis::whereMonth('tanggal', $bulan)
+        $cis = Cis::with('biayacis')->whereMonth('tanggal', $bulan)
             ->whereYear('tanggal', $tahun)
             ->orderBy('tanggal')
             ->get();
 
-        return view('cis.laporan', compact('cis', 'bulan', 'tahun'));
+        // Load view dan data ke dalam PDF
+        $pdf = Pdf::loadView('cis.laporan', compact('cis', 'bulan', 'tahun'));
+        // Atur nama file dan unduh
+        return $pdf->download('laporan-cis-' . $bulan . '-' . $tahun . '.pdf');
     }
 
 

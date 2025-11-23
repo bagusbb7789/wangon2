@@ -15,29 +15,39 @@
             padding: 0;
             background: #fff;
             box-sizing: border-box;
+            /* PROPERTI TAMBAHAN UNTUK FONT 12PT */
+            font-size: 12pt;
         }
         body {
             font-family: Arial, sans-serif;
             margin: 40px;
         }
-        h1, h2 {
+        h1, h2, h3 { /* Menambahkan h3 agar mengikuti ukuran font yang lebih kecil jika diperlukan */
             text-align: center;
         }
         table {
-            width: 100%;
+            width: 85%;
             border-collapse: collapse;
             margin-top: 30px;
+            /* Mengatur ukuran font untuk konten tabel */
+            font-size: 10pt;
         }
         th, td {
             border: 1px solid #000;
             padding: 8px 12px;
             text-align: center;
+            font-size: 10pt;
         }
         th {
             background-color: #eee;
         }
         .header-row {
             margin-bottom: 25px;
+        }
+        /* CLASS UNTUK MEMBUAT HALAMAN BARU */
+        .page-break {
+            page-break-after: always; /* Properti utama untuk pemisah halaman */
+            break-after: page;        /* Properti modern, lebih baik digunakan bersamaan */
         }
     </style>
 </head>
@@ -47,11 +57,9 @@
     <div>Tanggal: <strong> </strong></div>
 </div>
 
-<h3 style="text-transform: uppercase;">DAFTAR PENUTUPAN CASH IN SAVE (CIS) HARIAN</h3>
-<h3>BANK JATENG CAPEM WANGON</h3>
-<h3>PERIODE: <span style="text-transform: uppercase;">
-
-    </span></h3>
+<p style="text-transform: uppercase;">DAFTAR PENUTUPAN CASH IN SAVE (CIS) HARIAN</p>
+<p>BANK JATENG CAPEM WANGON</p>
+<p>PERIODE: <span style="text-transform: uppercase;"></span></p>
 @php
     // Hitung total nilai_pengiriman
     $totalNilaiPengiriman = $cis->sum(function($row) {
@@ -108,5 +116,50 @@
         </td>
     </tr>
 </table>
+
+<div class="page-break"></div>
+
+<div style="margin-top: 0;">
+    <h2 style="text-align: center;">RINCIAN BIAYA CASH IN SAVE (CIS)</h2>
+    @php
+        $totalBiaya = 0;
+    @endphp
+    <table style="margin-top: 20px;">
+        <thead>
+            <tr>
+                <th>TANGGAL CIS</th>
+                <th>NO. POLIS</th>
+                <th>NAMA BIAYA</th>
+                <th>NOMINAL</th>
+                <th>KETERANGAN</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($cis as $record)
+                @if($record->biayacis->isNotEmpty())
+                    @foreach($record->biayacis as $biaya)
+                        <tr>
+                            <td>{{ \Carbon\Carbon::parse($record->tanggal)->locale('id')->isoFormat('DD MMMM Y') }}</td>
+                            <td>{{ $record->nomor_polis }}</td>
+                            <td>{{ $biaya->namabiaya }}</td>
+                            <td style="text-align: right;">{{ 'Rp ' . number_format($biaya->nominal, 0, ',', '.') }}</td>
+                            <td>{{ $biaya->keterangan }}</td>
+                        </tr>
+                        @php $totalBiaya += $biaya->nominal; @endphp
+                    @endforeach
+                @endif
+            @empty
+                <tr>
+                    <td colspan="5">Tidak ada data biaya untuk periode ini.</td>
+                </tr>
+            @endforelse
+            <tr>
+                <td colspan="3" style="text-align: right;"><strong>TOTAL BIAYA</strong></td>
+                <td style="text-align: right;"><strong>{{ 'Rp ' . number_format($totalBiaya, 0, ',', '.') }}</strong></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

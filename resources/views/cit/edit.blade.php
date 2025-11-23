@@ -182,8 +182,14 @@
                                     <input type="number" step="0.01" class="form-control" id="rate" name="rate" value="{{ $cit->rate }}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="id_pimpinan">ID Pimpinan</label>
-                                    <input type="text" class="form-control" id="id_pimpinan" name="id_pimpinan" value="{{ $cit->id_pimpinan }}">
+                                    <label for="id_pimpinan">Penandatangan</label>
+                                    <select name="id_pimpinan" id="id_pimpinan" class="form-control" required>
+                                        <option value="">Pilih Pimpinan</option>
+                                        {{-- Diasumsikan $pimpinans di-pass dari controller --}}
+                                        @foreach($pimpinans as $pimpinan)
+                                            <option value="{{ $pimpinan->id }}" {{ $cit->id_pimpinan == $pimpinan->id ? 'selected' : '' }}>{{ $pimpinan->nama }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">

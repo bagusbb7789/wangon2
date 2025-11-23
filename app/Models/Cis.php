@@ -64,4 +64,9 @@ class Cis extends Model
         return $this->hasMany(Cisbalasan::class, 'cisid', 'id'); // 'cisid' adalah foreign key di Cisbalasan, 'id' adalah primary key pada Cis
     }
 
+    public function biayacis()
+    {
+        return $this->hasMany(Biayacis::class, 'id_cis', 'id');
+    }
+
 }

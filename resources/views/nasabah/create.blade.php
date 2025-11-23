@@ -1,0 +1,46 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <h2>Tambah Nasabah Baru</h2>
+
+    <form action="{{ route('nasabah.store') }}" method="POST">
+        @csrf
+
+        <div class="mb-3">
+            <label for="nocif" class="form-label">No CIF</label>
+            <input type="text" class="form-control @error('nocif') is-invalid @enderror" id="nocif" name="nocif" value="{{ old('nocif') }}">
+            @error('nocif')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="namanasabah" class="form-label">Nama Nasabah</label>
+            <input type="text" class="form-control @error('namanasabah') is-invalid @enderror" id="namanasabah" name="namanasabah" value="{{ old('namanasabah') }}" required>
+            @error('namanasabah')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="alamatnasabah" class="form-label">Alamat Nasabah</label>
+            <textarea class="form-control @error('alamatnasabah') is-invalid @enderror" id="alamatnasabah" name="alamatnasabah">{{ old('alamatnasabah') }}</textarea>
+            @error('alamatnasabah')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="pekerjaan" class="form-label">Pekerjaan</label>
+            <input type="text" class="form-control @error('pekerjaan') is-invalid @enderror" id="pekerjaan" name="pekerjaan" value="{{ old('pekerjaan') }}">
+            @error('pekerjaan')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <button type="submit" class="btn btn-success">Simpan Data</button>
+        <a href="{{ route('nasabah.index') }}" class="btn btn-secondary">Batal</a>
+    </form>
+</div>
+@endsection

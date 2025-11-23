@@ -1,108 +1,83 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h1>Buat Transaksi Baru</h1>
-
-        <form action="{{ route('transaksi.store') }}" method="POST">
-            @csrf
-
-            <div class="card">
-                <div class="card-header">Informasi Transaksi</div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="id_pinjaman">Produk Pinjaman</label>
-                        <select name="id_pinjaman" id="id_pinjaman" class="form-control" required>
-                            <option value="">-- Pilih ID Pinjaman --</option>
-                            @foreach ($pinjaman as $item)
-                                <option value="{{ $item->id }}">{{ $item->nama_pinjaman }} ({{ $item->id }})</option>
-                            @endforeach
-                        </select>
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h1 class="h4 mb-0">Tambah Transaksi</h1>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('transaksi.store') }}" method="POST">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="jenis_pinjaman_id">Jenis Pinjaman</label>
+                                <select id="jenis_pinjaman_id" class="form-control" required>
+                                    <option value="">-- Pilih Jenis Pinjaman --</option>
+                                    @foreach ($jenispinjamans as $item)
+                                        <option value="{{ $item->id }}">{{ $item->nama_jenispinjaman }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="id_pinjaman">Produk Pinjaman</label>
+                                <select name="id_pinjaman" id="id_pinjaman" class="form-control" required disabled>
+                                    <option value="">-- Pilih Jenis Pinjaman Terlebih Dahulu --</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="nomor_peminjam">Nomor Peminjam</label>
                         <input type="text" name="nomor_peminjam" id="nomor_peminjam" class="form-control" required>
                     </div>
-                    <div class="form-group">
-                        <label for="tanggal_pinjam">Tanggal Pinjam</label>
-                        <input type="date" name="tanggal_pinjam" id="tanggal_pinjam" class="form-control" required>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="tanggal_pinjam">Tanggal Pinjam</label>
+                                <input type="date" name="tanggal_pinjam" id="tanggal_pinjam" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="tanggal_selesai">Tanggal Selesai</label>
+                                <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control" required>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="tanggal_selesai">Tanggal Selesai</label>
-                        <input type="date" name="tanggal_selesai" id="tanggal_selesai" class="form-control" required>
-                    </div>
-                    <div class="form-group">
+                    <div class="form-group mb-3">
                         <label for="nominal">Nominal</label>
                         <input type="number" step="0.01" name="nominal" id="nominal" class="form-control" required>
                     </div>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
+                        <a href="{{ route('transaksi.index') }}" class="btn btn-secondary">Kembali</a>
+                    </div>
                 </div>
+            </form>
             </div>
-
-            <div class="card mt-4">
-                <div class="card-header">
-                    Detail Transaksi
-                    <button type="button" id="add-detail" class="btn btn-success">Tambah Detail</button>
-                </div>
-                <div class="card-body" id="details-wrapper">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Agunan</th>
-                            <th>Keterangan</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                        </thead>
-                        <tbody id="details-body">
-                        <tr>
-                            <td><select name="detail[0][id_agunan]" id="detail[0][id_agunan]" class="form-control" required>
-                                    <option value="">-- Pilih Agunan --</option>
-                                    @foreach ($agunan as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_agunan }} ({{ $item->id }})</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td><input type="text" name="detail[0][keterangan]" class="form-control" required></td>
-                            <td><input type="text" name="detail[0][status]" class="form-control" required></td>
-                            <td><button type="button" class="btn btn-danger btn-remove">Hapus</button></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary mt-4">Simpan Transaksi</button>
-        </form>
-    </div>
+        </div>
 
     <script>
-        let detailCount = 1;
+        document.getElementById('jenis_pinjaman_id').addEventListener('change', function () {
+            const jenisPinjamanId = this.value;
+            const pinjamanSelect = document.getElementById('id_pinjaman');
 
-        document.getElementById('add-detail').addEventListener('click', function () {
-            const wrapper = document.getElementById('details-body');
-            const content = `
-                <tr>
-                    <td>
-                        <select name="detail[${detailCount}][id_agunan]" id="detail[${detailCount}][id_agunan]" class="form-control" required>
-                            <option value="">-- Pilih Agunan --</option>
-                            @foreach ($agunan as $item)
-            <option value="{{ $item->id }}">{{ $item->nama_agunan }} ({{ $item->id }})</option>
-                            @endforeach
-            </select>
-        </td>
-        <td><input type="text" name="detail[${detailCount}][keterangan]" class="form-control" required></td>
-                    <td><input type="text" name="detail[${detailCount}][status]" class="form-control" required></td>
-                    <td><button type="button" class="btn btn-danger btn-remove">Hapus</button></td>
-                </tr>
-            `;
-            wrapper.insertAdjacentHTML('beforeend', content);
-            detailCount++;
-        });
+            pinjamanSelect.innerHTML = '<option value="">Memuat...</option>';
+            pinjamanSelect.disabled = true;
 
-        // Event delegation for removing a detail row
-        document.getElementById('details-wrapper').addEventListener('click', function (e) {
-            if (e.target && e.target.classList.contains('btn-remove')) {
-                const row = e.target.closest('tr');
-                row.remove();
+            if (jenisPinjamanId) {
+                fetch(`/get-pinjaman-by-jenis/${jenisPinjamanId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        pinjamanSelect.innerHTML = '<option value="">-- Pilih Produk Pinjaman --</option>';
+                        data.forEach(pinjaman => {
+                            pinjamanSelect.innerHTML += `<option value="${pinjaman.id}">${pinjaman.nama_pinjaman}</option>`;
+                        });
+                        pinjamanSelect.disabled = false;
+                    });
             }
         });
     </script>

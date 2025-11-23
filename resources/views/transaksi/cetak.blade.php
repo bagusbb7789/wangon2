@@ -26,75 +26,63 @@
 <table>
     <thead>
     <tr>
-        <th>No</th>
-        <th>Kelolaan</th>
+        <th rowspan="2">No</th>
+        <th colspan="2">Kelolaan</th>
+        <th colspan="4">Jumlah Dokumen Kredit Konsumtif</th>
+        <th colspan="2">Jumlah Dokumen Kredit Produktif</th>
+        <th colspan="2">Nominal Pertanggungan</th>
+        <th rowspan="2">Total Pertanggungan</th>
+        <th colspan="2">Premi CIS Dokumen</th>
+    </tr>
+    <tr>
         <th>Jenis Penggunaan</th>
         <th>Jumlah NoA</th>
-        <th>SK Pegawai/KARIP</th>
-        <th>SK Terakhir/SK Pensiun</th>
-        <th>PK Notarial</th>
-        <th>BRKB/SHM</th>
-        <th>PK Notarial</th>
+        <th>SK Pegawai / Karip</th>
+        <th>SK Terakhir/ SK Pensiun</th>
+        <th>PK Notariil</th>
         <th>SHM</th>
-        <th>Nominal Pertanggungan</th>
-        <th>Total Pertanggungan</th>
-        <th>Premi CIS Dokumen</th>
-        <th>Total Premi</th>
+        <th>PK Notariil</th>
+        <th>SHM</th>
+        <th>Komsutif</th>
+        <th>Produktif</th>
+        <th>Komsutif</th>
+        <th>Produktif</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td>1</td>
-        <td>Kredit Produktif</td>
-        <td>Kredit KMJ Startup Millenial</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <!-- Repeat the above <tr> for each row of data -->
-    <tr class="highlight">
-        <td>2</td>
-        <td>Kredit Konsumtif</td>
-        <td>KKB Pegawai</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <!-- Add more rows here -->
-    <tr class="highlight">
-        <td>q</td>
-        <td>PLO-Wiraswasta</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    <tr>
-        <td>Total</td>
-        <td colspan="12" style="text-align: right;">Total</td>
-        <td></td>
-    </tr>
+        <tr>
+            <td>1</td>
+            <td>KREDIT PRODUKTIF</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        
+        <tr>
+            <td>2</td>
+            <td>KREDIT KONSUMTIF</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
     </tbody>
 </table>
 </body>

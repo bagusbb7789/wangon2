@@ -14,14 +14,22 @@
             padding: 0;
             background: #fff;
             box-sizing: border-box;
+            /* PROPERTI TAMBAHAN UNTUK FONT 11PT */
+            font-size: 11pt;
         }
-        h1, h2 {
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        h1, h2, h3 {
             text-align: center;
         }
         table {
-            width: 100%;
+            width: 85%;
             border-collapse: collapse;
             margin-top: 30px;
+            /* Memastikan font tabel juga 11pt */
+            font-size: 11pt;
         }
         th, td {
             border: 1px solid #000;
@@ -34,21 +42,27 @@
         .header-row {
             margin-bottom: 25px;
         }
+        /* CLASS UNTUK MEMBUAT HALAMAN BARU */
+        .page-break {
+            page-break-after: always;
+            break-after: page;
+        }
     </style>
 </head>
 <body>
-<table>
+
+<table style="width: 40%; border: none;">
     <tr>
-        <td>
+        <td style="text-align: left; border: none; padding: 0;">
             <p>Lampiran Surat No :</p>
         </td>
-        <td>
+        <td style="text-align: left; border: none; padding: 0;">
             Tgl. :
         </td>
     </tr>
 </table>
-<h3>DAFTAR NOMINATIF CIT (CASH IN TRANSIT)</h3>
-<h3>BANK JATENG CAPEM WANGON PURWOKERTO</h3>
+<p>DAFTAR NOMINATIF CIT (CASH IN TRANSIT)</p>
+<p>BANK JATENG CAPEM WANGON PURWOKERTO</p>
 @php
     \Carbon\Carbon::setLocale('id');
     $namaBulan = \Carbon\Carbon::createFromFormat('m', $bulan)->translatedFormat('F');
@@ -101,13 +115,11 @@
 
     {{-- Total pada akhir tabel --}}
     <tr>
-        <td colspan="8" class="text-end"><strong></strong></td>
+        <td colspan="8" style="text-align: right;"><strong>TOTAL</strong></td>
         <td><strong>{{ 'Rp ' . number_format($totalNilaiPengiriman, 0, ',', '.') }}</strong></td>
     </tr>
     </tbody>
 </table>
-
-<!-- ...tabel sebelumnya... -->
 
 <table style="margin-top: 60px; border: none;">
     <tr>
@@ -132,6 +144,54 @@
         </td>
     </tr>
 </table>
+
+<div class="page-break"></div>
+
+<div style="margin-top: 0;">
+    <h2 style="text-align: center;">RINCIAN BIAYA CASH IN TRANSIT (CIT)</h2>
+    @php
+        $totalBiaya = 0;
+        $adaBiaya = $data->contains(function ($value, $key) {
+            return $value->biayacit->isNotEmpty();
+        });
+    @endphp
+    <table style="margin-top: 20px;">
+        <thead>
+        <tr>
+            <th>TANGGAL CIT</th>
+            <th>NO. PENGAJUAN</th>
+            <th>NAMA BIAYA</th>
+            <th>NOMINAL</th>
+            <th>KETERANGAN</th>
+        </tr>
+        </thead>
+        <tbody>
+        @if($adaBiaya)
+            @foreach($data as $record)
+                @if($record->biayacit->isNotEmpty())
+                    @foreach($record->biayacit as $biaya)
+                        <tr>
+                            <td>{{ \Carbon\Carbon::parse($record->tanggal_pengajuan)->locale('id')->isoFormat('DD MMMM Y') }}</td>
+                            <td>{{ $record->nomor_pengajuan }}</td>
+                            <td>{{ $biaya->namabiaya }}</td>
+                            <td style="text-align: right;">{{ 'Rp ' . number_format($biaya->nominal, 0, ',', '.') }}</td>
+                            <td>{{ $biaya->keterangan }}</td>
+                        </tr>
+                        @php $totalBiaya += $biaya->nominal; @endphp
+                    @endforeach
+                @endif
+            @endforeach
+        @else
+            <tr><td colspan="5">Tidak ada data biaya untuk periode ini.</td></tr>
+        @endif
+        <tr>
+            <td colspan="3" style="text-align: right;"><strong>TOTAL BIAYA</strong></td>
+            <td style="text-align: right;"><strong>{{ 'Rp ' . number_format($totalBiaya, 0, ',', '.') }}</strong></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 </body>
 </html>
