@@ -52,7 +52,7 @@
     <tbody>
         <tr>
             <td>1</td>
-            <td>KREDIT PRODUKTIF</td>
+            <td><b>KREDIT KONSUMTIF</b></td>
             <td></td>
             <td></td>
             <td></td>
@@ -66,10 +66,65 @@
             <td></td>
             <td></td>
         </tr>
-        
+        @foreach ($pinjaman as $pinjam)
+            @php
+                $totalDetail = 0;
+                $totkarip = 0;
+                $totskterakhir = 0;
+                $totpk = 0;
+                $totshm = 0;
+                $hitung = 0;
+                $premi = 0;
+                foreach ($pinjam->transaksis as $transaksi) 
+                {
+                    $totalDetail += $transaksi->detailTransaksis->count();
+                    foreach ($transaksi->detailTransaksis as $detail) {
+                       if ($detail->agunan->jenisagunan == '1') {
+                            $totkarip++;
+                        }
+                    }
+                    foreach ($transaksi->detailTransaksis as $detail) {
+                       if ($detail->agunan->jenisagunan == '2') {
+                            $totskterakhir++;
+                        }
+                    }
+                    foreach ($transaksi->detailTransaksis as $detail) {
+                       if ($detail->agunan->jenisagunan == '3') {
+                            $totpk++;
+                        }
+                    }
+                    foreach ($transaksi->detailTransaksis as $detail) {
+                       if ($detail->agunan->jenisagunan == '6') {
+                            $totshm++;
+                        }
+                    }
+
+                    $hitung=$totkarip*500000+$totskterakhir*500000+$totpk*1000000+$totshm*5000000;
+                    $premi = 2.75 * $hitung / 1000;
+                }
+            @endphp
+            <tr>
+                <td></td>
+                <td>{{ $pinjam->nama_pinjaman }}</td>
+                <td>
+                   {{ $totalDetail }}
+                </td>
+                <td>{{ $totkarip }}</td>
+                <td>{{ $totskterakhir }}</td>
+                <td>{{ $totpk }}</td>
+                <td>{{ $totshm }}</td>
+                <td></td>
+                <td></td>
+                <td>{{ $hitung }}</td>
+                <td></td>
+                <td>{{ $hitung }}</td>
+                <td>{{ $premi }}</td>
+                <td></td>
+            </tr>
+         @endforeach
         <tr>
             <td>2</td>
-            <td>KREDIT KONSUMTIF</td>
+            <td><b>KREDIT PRODUKTIF</b></td>
             <td></td>
             <td></td>
             <td></td>
@@ -83,6 +138,31 @@
             <td></td>
             <td></td>
         </tr>
+        @foreach ($pinjaman2 as $pinjam2)
+        @php
+                $totalDetail2 = 0;
+                foreach ($pinjam2->transaksis as $transaksi) 
+                {
+                    $totalDetail2 += $transaksi->detailTransaksis->count();
+                }
+            @endphp
+            <tr>
+                <td></td>
+                <td>{{ $pinjam2->nama_pinjaman }}</td>
+                <td>{{ $totalDetail2 }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            @endforeach
     </tbody>
 </table>
 </body>

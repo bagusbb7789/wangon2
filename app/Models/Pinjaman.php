@@ -21,4 +21,8 @@ class Pinjaman extends Model
     {
         return $this->belongsTo(Jenispinjaman::class, 'id_jenispinjaman', 'id');
     }
+
+    public function transaksis() {
+        return $this->hasMany(Transaksi::class, 'id_pinjaman', 'id');
+    }
 }

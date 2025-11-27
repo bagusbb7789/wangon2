@@ -123,14 +123,20 @@ class TransaksiController extends Controller
     {
         // Pastikan relasi pinjaman dan detail di-load agar view bisa mengakses semua atribut
         $transaksi->load('pinjaman', 'pinjaman.jenispinjaman', 'detailTransaksis.agunan');
+        $pinjaman = Pinjaman::where('id_jenispinjaman','1')->get(); // Ambil semua data pinjaman
+        $pinjaman2 = Pinjaman::where('id_jenispinjaman','2')->get();
 
-        return view('transaksi.cetak', compact('transaksi'));
+        $detailtransaksi = Detailtransaksi::with('agunan','transaksi.pinjaman')->get();
+        $agunan = Agunan::all();
+
+        return view('transaksi.cetak', compact('transaksi','pinjaman','pinjaman2','agunan','detailtransaksi'));
     }
 
     public function getPinjamanByJenis($jenispinjaman_id)
     {
         // Ambil data pinjaman berdasarkan jenispinjaman_id
         $pinjaman = Pinjaman::where('id_jenispinjaman', $jenispinjaman_id)->where('status', 1)->get();
+        
         // Kembalikan data dalam format JSON
         return response()->json($pinjaman);
     }

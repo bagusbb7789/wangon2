@@ -10,5 +10,5 @@ class Agunan extends Model
     //
     use HasFactory;
     protected $table = 'agunan';
-    protected $fillable = ['nama_agunan','keterangan','status'];
+    protected $fillable = ['nama_agunan','keterangan','status','jenisagunan'];
 }
