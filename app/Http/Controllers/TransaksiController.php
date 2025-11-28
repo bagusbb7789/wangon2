@@ -131,6 +131,36 @@ class TransaksiController extends Controller
 
         return view('transaksi.cetak', compact('transaksi','pinjaman','pinjaman2','agunan','detailtransaksi'));
     }
+    public function show(Transaksi $transaksi)
+    {
+        // Biasanya di sini Anda memuat relasi yang diperlukan untuk detail
+        $transaksi->load(['pinjaman.jenispinjaman', 'detailTransaksis.agunan']);
+
+        return view('transaksi.show', compact('transaksi'));
+    }
+    public function laporan(Request $request)
+    {
+        $request->validate([
+            'bulan' => 'required|integer|min:1|max:12',
+            'tahun' => 'required|integer|min:2000|max:2100',
+        ]);
+
+        $bulan = $request->input('bulan');
+        $tahun = $request->input('tahun');
+        $tanggalMulai = \Carbon\Carbon::createFromDate($tahun, $bulan, 1)->startOfDay();
+        $transaksi = Transaksi::with(['pinjaman.jenispinjaman', 'detailTransaksis.agunan'])
+            ->where('tanggal_selesai', '>=', $tanggalMulai)
+            ->orderBy('tanggal_pinjam')
+            ->get();
+
+        $pinjaman = Pinjaman::where('id_jenispinjaman','1')->get(); // Ambil semua data pinjaman
+        $pinjaman2 = Pinjaman::where('id_jenispinjaman','2')->get();
+
+        $detailtransaksi = Detailtransaksi::with('agunan','transaksi.pinjaman')->get();
+        $agunan = Agunan::all();    
+
+        return view('transaksi.laporan', compact('transaksi','pinjaman','pinjaman2','agunan','detailtransaksi'));
+    }
 
     public function getPinjamanByJenis($jenispinjaman_id)
     {

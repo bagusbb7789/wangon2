@@ -48,10 +48,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/cit/surat/{cit}', [CitController::class, 'surat'])->name('cit.surat');
     Route::get('/cis/surat/{cis}', [CisController::class, 'surat'])->name('cis.surat');
     Route::get('/cis/view/{cis}', [CisController::class, 'view'])->name('cis.view');
+    Route::get('/transaksi/cetak/{transaksi}', [TransaksiController::class, 'cetak'])->name('transaksi.cetak');
+    Route::get('transaksi/laporan/', [TransaksiController::class, 'laporan'])->name('transaksi.laporan');
     Route::resource('transaksi', TransaksiController::class);
     Route::get('/get-pinjaman-by-jenis/{jenispinjaman_id}', [TransaksiController::class, 'getPinjamanByJenis'])->name('transaksi.getPinjamanByJenis');
     Route::post('/transaksi/agunan', [TransaksiController::class, 'storeAgunan'])->name('transaksi.agunan.store');
-    Route::get('/transaksi/cetak/{transaksi}', [TransaksiController::class, 'cetak'])->name('transaksi.cetak');
+    
     Route::resource('detailtransaksi', DetailtransaksiController::class);
     Route::resource('biayacis', BiayacisController::class)->middleware('auth');
     Route::resource('biayacit', BiayacitController::class)->middleware('auth');
