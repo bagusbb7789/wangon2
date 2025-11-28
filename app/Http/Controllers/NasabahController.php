@@ -14,7 +14,7 @@ class NasabahController extends Controller
     public function index()
     {
         // Ambil semua data nasabah dari database
-        $nasabah = Nasabah::all();
+        $nasabah = Nasabah::paginate(20);
 
         // Tampilkan view 'nasabah.index' dan kirimkan data nasabah
         return view('nasabah.index', compact('nasabah'));

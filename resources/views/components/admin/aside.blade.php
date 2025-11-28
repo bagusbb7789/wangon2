@@ -70,6 +70,12 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a href="{{route('nasabah.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Nasabah</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{route('pimpinan.index')}}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Pimpinan</p>
