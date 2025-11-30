@@ -72,7 +72,7 @@
                 'jam_kerja_polisi' => 'Jam Kerja Polisi',
                 'jam_kerja_calon_tertanggung_awal' => 'Jam Kerja Calon Tertanggung Awal',
                 'jam_kerja_calon_tertanggung_akhir' => 'Jam Kerja Calon Tertanggung Akhir',
-                'id_pimpinan' => 'ID Pimpinan',
+                'id_pimpinan' => 'Penandatangan',
                 'catatan_lainnya' => 'Catatan Lainnya',
             ] as $name => $label)
                 <div class="form-group mb-2">
@@ -85,13 +85,36 @@
                             rows="3"
                         >{{ old($name, $edit ? $cis->$name : '') }}</textarea>
                     @else
-                        <input
-                            type="{{ in_array($name, ['jumlah_regu_penjaga', 'tahun_pembuatan', 'rate_angkut']) ? 'number' : 'text' }}"
-                            id="{{ $name }}"
-                            name="{{ $name }}"
-                            class="form-control @error($name) is-invalid @enderror"
-                            value="{{ old($name, $edit ? $cis->$name : '') }}"
-                        >
+                        @if($name === 'id_pimpinan')
+                            {{-- Jika controller menyediakan daftar pimpinans, tampilkan select --}}
+                            @if(isset($pimpinans) && $pimpinans->isNotEmpty())
+                                <select id="id_pimpinan" name="id_pimpinan" class="form-control @error('id_pimpinan') is-invalid @enderror">
+                                    <option value="">-- Pilih Pimpinan --</option>
+                                    @foreach($pimpinans as $pimpinan)
+                                        <option value="{{ $pimpinan->id }}" {{ old('id_pimpinan', $edit ? $cis->id_pimpinan : '') == $pimpinan->id ? 'selected' : '' }}>
+                                            {{ $pimpinan->nama ?? ($pimpinan->nama_jabatan ?? 'Pimpinan #' . $pimpinan->id) }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            @else
+                                {{-- Fallback ke input text jika tidak ada daftar --}}
+                                <input
+                                    type="text"
+                                    id="id_pimpinan"
+                                    name="id_pimpinan"
+                                    class="form-control @error('id_pimpinan') is-invalid @enderror"
+                                    value="{{ old('id_pimpinan', $edit ? $cis->id_pimpinan : '') }}"
+                                >
+                            @endif
+                        @else
+                            <input
+                                type="{{ in_array($name, ['jumlah_regu_penjaga', 'tahun_pembuatan', 'rate_angkut']) ? 'number' : 'text' }}"
+                                id="{{ $name }}"
+                                name="{{ $name }}"
+                                class="form-control @error($name) is-invalid @enderror"
+                                value="{{ old($name, $edit ? $cis->$name : '') }}"
+                            >
+                        @endif
                     @endif
                     @error($name)
                     <div class="invalid-feedback">{{ $message }}</div>

@@ -12,7 +12,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row mb-3 justify-content-between align-items-end">
-                        <div class="col-md-6">
+                        <div class="col-md-6 text-md-end">
                             {{-- Search Form --}}
                             <form action="{{ route('cit.index') }}" method="GET" class="form-inline mb-3">
                                 <div class="input-group">

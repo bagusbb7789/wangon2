@@ -29,9 +29,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="nomor_peminjam">Nomor Peminjam</label>
-                        <input type="text" name="nomor_peminjam" id="nomor_peminjam" class="form-control" required>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="nomor_pinjaman">Nomor Pinjaman</label>
+                                <input type="text" name="nomor_pinjaman" id="nomor_pinjaman" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="nomor_peminjam">Nomor CIF / Nasabah</label>
+                                <select id="nomor_peminjam" class="form-control" required>
+                                    <option value="">-- Pilih Nasabah --</option>
+                                    @foreach ($nasabah as $item)
+                                        <option value="{{ $item->nocif }}">{{ $item->namanasabah }} - {{ $item->nocif }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">

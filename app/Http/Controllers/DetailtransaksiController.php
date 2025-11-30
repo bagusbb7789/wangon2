@@ -47,14 +47,17 @@ class DetailtransaksiController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            // sesuai field model
-            'id_agunan' => 'required',
-            'keterangan' => 'required',
-            // dst.
+            // Sesuaikan dengan kolom pada table detailtransaksis
+            'id_transaksi' => 'required|integer|exists:transaksis,id',
+            'id_agunan' => 'required|integer|exists:agunan,id',
+            'keterangan' => 'required|string|max:255',
+            'status' => 'required|string|max:50',
         ]);
+
         $detailtransaksi = Detailtransaksi::findOrFail($id);
+        // Pastikan hanya field yang divalidasi yang diupdate
         $detailtransaksi->update($validated);
-        return redirect()->route('detailtransaksi.index')->with('success', 'Berhasil mengubah data.');
+        return redirect()->route('transaksi.index')->with('success', 'Berhasil mengubah data.');
     }
 
     public function destroy($id)

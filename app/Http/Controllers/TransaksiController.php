@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Agunan;
 use App\Models\Jenispinjaman;
+use App\Models\Nasabah;
 use Illuminate\Http\Request;
 use App\Models\Pinjaman;
 use App\Models\Transaksi;
@@ -22,6 +23,10 @@ class TransaksiController extends Controller
         // Filter berdasarkan nomor peminjam
         if ($request->filled('nomor_peminjam')) {
             $query->where('nomor_peminjam', 'like', '%' . $request->nomor_peminjam . '%');
+        }
+
+        if ($request->filled('nomor_pinjaman')) {
+            $query->where('nomor_pinjaman', 'like', '%' .$request->nomor_pinjaman . '%');
         }
 
         // Filter berdasarkan tanggal pinjam
@@ -45,7 +50,8 @@ class TransaksiController extends Controller
     public function create()
     {
         $jenispinjamans = Jenispinjaman::where('status', 1)->get();
-        return view('transaksi.create', compact('jenispinjamans'));
+        $nasabah = Nasabah::all();
+        return view('transaksi.create', compact('jenispinjamans','nasabah'));
     }
 
     /**
@@ -73,10 +79,29 @@ class TransaksiController extends Controller
      */
     public function edit(Transaksi $transaksi)
     {
-        $transaksi->load('detailTransaksis'); // Muat transaksi beserta detailnya
-        $pinjaman = Pinjaman::all(); // Ambil semua data pinjaman
-        $agunan = Agunan::all();
-        return view('transaksi.edit', compact('transaksi', 'pinjaman','agunan'));
+        // Eager-load relations used by the edit view so we avoid N+1 and undefined relations
+        $transaksi->load('pinjaman.jenispinjaman', 'detailTransaksis.agunan');
+
+        // Ambil data referensi yang biasanya diperlukan pada form edit
+        $pinjamans = Pinjaman::where('status', 1)->get();
+        $agunans = Agunan::where('status', 1)->get();
+        $jenispinjamans = Jenispinjaman::where('status', 1)->get();
+        $produkpinjamans = $pinjamans; // beberapa view menggunakan nama ini
+        $nasabah = Nasabah::all();
+
+        // Backwards-compatibility: beberapa view (yang belum disesuaikan) mengecek
+        // $transaksi->pinjaman->jenis_pinjaman_id — kita tambahkan attribute virtual
+        // 'jenis_pinjaman_id' pada model transaksi agar view lama tetap bekerja.
+        if ($transaksi->relationLoaded('pinjaman') && $transaksi->pinjaman) {
+            // coba beberapa kemungkinan nama kolom pada model Pinjaman
+            $jenisId = $transaksi->pinjaman->id_jenispinjaman ?? $transaksi->pinjaman->jenispinjaman_id ?? null;
+            $transaksi->setAttribute('jenis_pinjaman_id', $jenisId);
+            // juga tetapkan atribut kompatibilitas pada model Pinjaman sendiri yang digunakan di view
+            $transaksi->pinjaman->setAttribute('jenis_pinjaman_id', $jenisId);
+            $transaksi->pinjaman->setAttribute('id_jenispinjaman', $jenisId);
+        }
+
+        return view('transaksi.edit', compact('transaksi', 'nasabah', 'pinjamans', 'agunans', 'jenispinjamans', 'produkpinjamans'));
     }
 
 
@@ -173,14 +198,15 @@ class TransaksiController extends Controller
 
     public function storeAgunan(Request $request)
     {
+        // Perbaiki typo dan gunakan nama tabel/kolom yang benar untuk validasi
         $request->validate([
-            'id_transasksi' => 'required|exists:transaksi,id_transasksi',
+            'id_transaksi' => 'required|exists:transaksis,id',
             'id_agunan' => 'required|exists:agunan,id',
             'keterangan' => 'required|string|max:255',
             'status' => 'required|string|max:255',
         ]);
 
-        Detailtransaksi::create($request->all());
+        Detailtransaksi::create($request->only(['id_transaksi', 'id_agunan', 'keterangan', 'status']));
 
         return redirect()->route('transaksi.index')->with('success', 'Agunan berhasil ditambahkan.');
     }

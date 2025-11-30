@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cis;
+use App\Models\Pimpinan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
@@ -55,7 +56,8 @@ class CisController extends Controller
      */
     public function create()
     {
-        return view('cis.create');
+        $pimpinans = Pimpinan::all();
+        return view('cis.create', compact('pimpinans'));
     }
 
     /**
@@ -87,7 +89,8 @@ class CisController extends Controller
     public function edit($id)
     {
         $cis = Cis::findOrFail($id);
-        return view('cis.edit', compact('cis'));
+        $pimpinans = Pimpinan::all();
+        return view('cis.edit', compact('cis', 'pimpinans'));
     }
 
     /**

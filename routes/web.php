@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaksi/cetak/{transaksi}', [TransaksiController::class, 'cetak'])->name('transaksi.cetak');
     Route::get('transaksi/laporan/', [TransaksiController::class, 'laporan'])->name('transaksi.laporan');
     Route::resource('transaksi', TransaksiController::class);
+    Route::get('/transaksi/view/{transaksi}', [TransaksiController::class, 'view'])->name('transaksi.view');
     Route::get('/get-pinjaman-by-jenis/{jenispinjaman_id}', [TransaksiController::class, 'getPinjamanByJenis'])->name('transaksi.getPinjamanByJenis');
     Route::post('/transaksi/agunan', [TransaksiController::class, 'storeAgunan'])->name('transaksi.agunan.store');
     

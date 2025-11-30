@@ -27,6 +27,7 @@ class Transaksi extends Model
     protected $fillable = [
         'id_pinjaman',
         'nomor_peminjam',
+        'nomor_pinjaman',
         'tanggal_pinjam',
         'tanggal_selesai',
         'nominal',
@@ -51,6 +52,11 @@ class Transaksi extends Model
     public function pinjaman()
     {
         return $this->belongsTo(Pinjaman::class, 'id_pinjaman', 'id');
+    }
+
+    public function nasabah()
+    {
+        return $this->belongsTo(Nasabah::class, 'nomor_peminjam', 'nocif');
     }
 
 }

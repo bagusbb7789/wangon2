@@ -31,8 +31,10 @@ class PimpinanController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'nama_perusahaan' => 'required|string|max:255',
+            'nama_jabatan' => 'required|string|max:255',
+            'nomor_pegawai' => 'nullable|string|max:255',
             'nama' => 'required|string|max:255',
-            'jabatan' => 'required|string|max:255'
         ]);
 
         Pimpinan::create($validated);
@@ -63,8 +65,10 @@ class PimpinanController extends Controller
     public function update(Request $request, Pimpinan $pimpinan)
     {
         $validated = $request->validate([
+            'nama_perusahaan' => 'required|string|max:255',
+            'nama_jabatan' => 'required|string|max:255',
+            'nomor_pegawai' => 'nullable|string|max:255',
             'nama' => 'required|string|max:255',
-            'jabatan' => 'required|string|max:255'
         ]);
 
         $pimpinan->update($validated);
