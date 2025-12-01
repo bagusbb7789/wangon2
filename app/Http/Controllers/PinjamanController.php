@@ -14,7 +14,7 @@ class PinjamanController extends Controller
     public function index()
     {
         // Fetch all Pinjaman records with related Jenispinjaman data
-        $pinjaman = Pinjaman::with('jenispinjaman')->get();
+        $pinjaman = Pinjaman::with('jenispinjaman')->paginate(20);
 
         // Return view with the data
         return view('pinjaman.index', compact('pinjaman'));

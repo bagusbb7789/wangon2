@@ -2,9 +2,13 @@
 
 @section('content')
 <div class="container">
-    <h2>Tambah Nasabah Baru</h2>
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">Tambah Nasabah Baru</h2>
+        </div>
+        <div class="card-body">
 
-    <form action="{{ route('nasabah.store') }}" method="POST">
+            <form action="{{ route('nasabah.store') }}" method="POST">
         @csrf
 
         <div class="mb-3">
@@ -39,8 +43,10 @@
             @enderror
         </div>
 
-        <button type="submit" class="btn btn-success">Simpan Data</button>
-        <a href="{{ route('nasabah.index') }}" class="btn btn-secondary">Batal</a>
-    </form>
+                <button type="submit" class="btn btn-success">Simpan Data</button>
+                <a href="{{ route('nasabah.index') }}" class="btn btn-secondary">Batal</a>
+            </form>
+        </div>
+    </div>
 </div>
 @endsection

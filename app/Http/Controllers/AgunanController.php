@@ -13,7 +13,7 @@ class AgunanController extends Controller
     public function index()
     {
         // Fetch all 'agunan' records
-        $agunan = Agunan::all();
+        $agunan = Agunan::paginate(20);
 
         // Return view with data
         return view('agunan.index', compact('agunan'));

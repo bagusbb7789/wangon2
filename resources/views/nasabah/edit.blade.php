@@ -2,11 +2,15 @@
 
 @section('content')
 <div class="container">
-    <h2>Edit Nasabah: {{ $nasabah->namanasabah }}</h2>
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">Edit Nasabah: {{ $nasabah->namanasabah }}</h2>
+        </div>
+        <div class="card-body">
 
-    <form action="{{ route('nasabah.update', $nasabah->idnasabah) }}" method="POST">
-        @csrf
-        @method('PUT')
+            <form action="{{ route('nasabah.update', $nasabah->idnasabah) }}" method="POST">
+                @csrf
+                @method('PUT')
 
         <div class="mb-3">
             <label for="nocif" class="form-label">No CIF</label>
@@ -40,8 +44,10 @@
             @enderror
         </div>
 
-        <button type="submit" class="btn btn-success">Update Data</button>
-        <a href="{{ route('nasabah.index') }}" class="btn btn-secondary">Batal</a>
-    </form>
+                <button type="submit" class="btn btn-success">Update Data</button>
+                <a href="{{ route('nasabah.index') }}" class="btn btn-secondary">Batal</a>
+            </form>
+        </div>
+    </div>
 </div>
 @endsection
