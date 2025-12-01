@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container">
-        <h1>Pinjaman</h1>
-        <a href="{{ route('pinjaman.create') }}" class="btn btn-primary mb-3">Create New Pinjaman</a>
+        <h1>Produk Pinjaman</h1>
+        <a href="{{ route('pinjaman.create') }}" class="btn btn-primary mb-3">Create Produk Pinjaman</a>
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
@@ -12,8 +12,8 @@
             <tr>
                 <th>ID</th>
                 <th>Jenis Pinjaman</th>
-                <th>Jumlah</th>
-                <th>Tanggal</th>
+                <th>Nama Produk</th>
+                <th>Keterangan</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>

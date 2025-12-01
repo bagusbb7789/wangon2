@@ -26,9 +26,9 @@ class PinjamanController extends Controller
     public function create()
     {
         // Fetch all Jenispinjaman to populate the dropdown in the form
-        $jenispinjaman = Jenispinjaman::where('status', 1)->get();
+        $jenispinjamans = Jenispinjaman::where('status', 1)->get();
 
-        return view('pinjaman.create', compact('jenispinjaman'));
+        return view('pinjaman.create', compact('jenispinjamans'));
     }
 
     /**
@@ -68,9 +68,9 @@ class PinjamanController extends Controller
     {
         // Fetch Pinjaman and Jenispinjaman data
         $pinjaman = Pinjaman::findOrFail($id);
-        $jenispinjaman = Jenispinjaman::where('status', 1)->get();
+        $jenispinjamans = Jenispinjaman::where('status', 1)->get();
 
-        return view('pinjaman.edit', compact('pinjaman', 'jenispinjaman'));
+        return view('pinjaman.edit', compact('pinjaman', 'jenispinjamans'));
     }
 
     /**
