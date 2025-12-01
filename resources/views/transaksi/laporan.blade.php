@@ -126,7 +126,7 @@
                 if ($jenisAgunan == '1') { $totkarip++; $totalDokKaripKons++; }
                 if ($jenisAgunan == '2') { $totskterakhir++; $totalDokSKTerakhirKons++; }
                 if ($jenisAgunan == '3') { $totpk++; $totalDokPKKons++; }
-                if ($jenisAgunan == '6' && $idPinjamanAgunan == '1') { $totshm++; $totalDokSHMKons++; }
+                if ($jenisAgunan == '4' && $idPinjamanAgunan == '1') { $totshm++; $totalDokSHMKons++; }
             }
 
             // Hitung Nominal Pertanggungan dan Premi UNTUK TRANSAKSI INI
@@ -198,9 +198,9 @@
             <td style="background-color:#ffcccc;">{{ number_format($totalPertanggunganProduktif, 0, ',', '.') }}</td>
             <td style="background-color:#ffcccc;"></td>
             {{-- Premi CIS Dokumen Produktif (kolom Produktif) --}}
-            <td style="background-color:#ffcccc;">{{ number_format($totalPremiProduktif, 2, ',', '.') }}</td>
+            <td style="background-color:#ffcccc;">{{ number_format($totalPremiProduktif, 0, ',', '.') }}</td>
             {{-- Total Premi (sama dengan Premi Produktif di baris ini) --}}
-            <td style="background-color:#ffcccc;">{{ number_format($totalPremiProduktif, 2, ',', '.') }}</td>
+            <td style="background-color:#ffcccc;">{{ number_format($totalPremiProduktif, 0, ',', '.') }}</td>
         </tr>
         
         {{-- BARIS DETAIL KREDIT PRODUKTIF --}}
@@ -259,8 +259,8 @@
                 <td>{{ $hitungprod > 0 ? number_format($hitungprod, 0, ',', '.') : '-' }}</td>
                 <td>{{ $hitungprod > 0 ? number_format($hitungprod, 0, ',', '.') : '-' }}</td>
                 <td style="background-color:#ffcccc;"></td>
-                <td>{{ $premiprod > 0 ? number_format($premiprod, 2, ',', '.') : '-' }}</td>
-                <td>{{ $premiprod > 0 ? number_format($premiprod, 2, ',', '.') : '-' }}</td>
+                <td>{{ $premiprod > 0 ? number_format($premiprod, 0, ',', '.') : '-' }}</td>
+                <td>{{ $premiprod > 0 ? number_format($premiprod, 0, ',', '.') : '-' }}</td>
             </tr>
             @endforeach
             
@@ -282,10 +282,10 @@
             {{-- Total Pertanggungan (sama dengan Nominal Konsumtif di baris ini) --}}
             <td style="background-color:#ffcccc;">{{ number_format($totalPertanggunganKonsumtif, 0, ',', '.') }}</td>
             {{-- Premi CIS Dokumen Konsumtif (kolom Komsutif) --}}
-            <td style="background-color:#ffcccc;">{{ number_format($totalPremiKonsumtif, 2, ',', '.') }}</td>
+            <td style="background-color:#ffcccc;">{{ number_format($totalPremiKonsumtif, 0, ',', '.') }}</td>
             <td style="background-color:#ffcccc;"></td>
             {{-- Total Premi (sama dengan Premi Konsumtif di baris ini) --}}
-            <td style="background-color:#ffcccc;">{{ number_format($totalPremiKonsumtif, 2, ',', '.') }}</td>
+            <td style="background-color:#ffcccc;">{{ number_format($totalPremiKonsumtif, 0, ',', '.') }}</td>
         </tr>
         
         {{-- BARIS DETAIL KREDIT KONSUMTIF --}}
@@ -318,7 +318,7 @@
                        if ($jenisAgunan == '1') { $totkarip_transaksi++; $totkarip++; }
                        if ($jenisAgunan == '2') { $totskterakhir_transaksi++; $totskterakhir++; }
                        if ($jenisAgunan == '3') { $totpk_transaksi++; $totpk++; }
-                       if ($jenisAgunan == '6' && $idPinjamanAgunan == '1') { $totshm_transaksi++; $totshm++; }
+                       if ($jenisAgunan == '4' && $idPinjamanAgunan == '1') { $totshm_transaksi++; $totshm++; }
                     }
 
                     $hitungTransaksi=$totkarip_transaksi*500000 + $totskterakhir_transaksi*500000 + $totpk_transaksi*1000000 + $totshm_transaksi*5000000;
@@ -345,9 +345,9 @@
                 <td>{{ $hitung > 0 ? number_format($hitung, 0, ',', '.'):'-' }}</td>
                 <td style="background-color:#ffcccc;"></td>
                 <td>{{ $hitung > 0 ? number_format($hitung, 0, ',', '.'):'-' }}</td>
-                <td>{{ $premi > 0 ? number_format($premi, 2, ',', '.'):'-' }}</td>
+                <td>{{ $premi > 0 ? number_format($premi, 0, ',', '.'):'-' }}</td>
                 <td style="background-color:#ffcccc;"></td>
-                <td>{{ $premi > 0 ? number_format($premi, 2, ',', '.'):'-' }}</td>
+                <td>{{ $premi > 0 ? number_format($premi, 0, ',', '.'):'-' }}</td>
             </tr>
          @endforeach
     </tbody>
@@ -364,9 +364,9 @@
             <th>{{ number_format($totalPertanggunganKonsumtif, 0, ',', '.') }}</th>
             <th>{{ number_format($totalPertanggunganProduktif, 0, ',', '.') }}</th>
             <th>{{ number_format($grandTotalPertanggungan, 0, ',', '.') }}</th>
-            <th>{{ number_format($totalPremiKonsumtif, 2, ',', '.') }}</th>
-            <th>{{ number_format($totalPremiProduktif, 2, ',', '.') }}</th>
-            <th>{{ number_format($grandTotalPremi, 2, ',', '.') }}</th>
+            <th>{{ number_format($totalPremiKonsumtif, 0, ',', '.') }}</th>
+            <th>{{ number_format($totalPremiProduktif, 0, ',', '.') }}</th>
+            <th>{{ number_format($grandTotalPremi, 0, ',', '.') }}</th>
         </tr>
     </tfoot>
 </table>

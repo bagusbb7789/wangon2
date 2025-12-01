@@ -6,12 +6,48 @@ use App\Models\Agunan;
 use App\Models\Jenispinjaman;
 use App\Models\Nasabah;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Pinjaman;
 use App\Models\Transaksi;
 use App\Models\Detailtransaksi;
 
 class TransaksiController extends Controller
 {
+    public function toggleStatus(Request $request, Transaksi $transaksi)
+    {
+        // 1. Validasi Input Status
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:aktif,tidak aktif',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Status tidak valid.',
+                'errors' => $validator->errors()
+            ], 400); // 400 Bad Request
+        }
+
+        try {
+            // 2. Perbarui Status
+            $transaksi->status = $request->status;
+            $transaksi->save();
+
+            // 3. Kirim Respon Sukses
+            return response()->json([
+                'success' => true,
+                'new_status' => $transaksi->status,
+                'message' => 'Status pinjaman berhasil diubah.'
+            ]);
+
+        } catch (\Exception $e) {
+            // 4. Tangani Kesalahan Server
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui status. ' . $e->getMessage()
+            ], 500); // 500 Internal Server Error
+        }
+    }
     /**
      * Show the form for creating a new transaksi.
      */
@@ -166,25 +202,42 @@ class TransaksiController extends Controller
     public function laporan(Request $request)
     {
         $request->validate([
-            'bulan' => 'required|integer|min:1|max:12',
             'tahun' => 'required|integer|min:2000|max:2100',
         ]);
 
-        $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
-        $tanggalMulai = \Carbon\Carbon::createFromDate($tahun, $bulan, 1)->startOfDay();
-        $transaksi = Transaksi::with(['pinjaman.jenispinjaman', 'detailTransaksis.agunan'])
-            ->where('tanggal_selesai', '>=', $tanggalMulai)
+        $tanggalMulai = \Carbon\Carbon::createFromDate($tahun, 12, 31)->startOfDay();
+        $transaksis = Transaksi::with(['pinjaman.jenispinjaman', 'detailTransaksis.agunan'])
+            ->where('tanggal_selesai', '>', $tanggalMulai)
+            ->where('status', 'aktif')
             ->orderBy('tanggal_pinjam')
             ->get();
 
-        $pinjaman = Pinjaman::where('id_jenispinjaman','1')->get(); // Ambil semua data pinjaman
+        // Ambil SEMUA data pinjaman (tidak di-filter, tapi transaksinya akan diisi sesuai filter)
+        $pinjaman = Pinjaman::where('id_jenispinjaman','1')->get();
         $pinjaman2 = Pinjaman::where('id_jenispinjaman','2')->get();
 
-        $detailtransaksi = Detailtransaksi::with('agunan','transaksi.pinjaman')->get();
+        // Buat map transaksis yang sudah difilter berdasarkan id_pinjaman
+        $pinjamanMap = [];
+        foreach ($transaksis as $t) {
+            if (!isset($pinjamanMap[$t->id_pinjaman])) {
+                $pinjamanMap[$t->id_pinjaman] = [];
+            }
+            $pinjamanMap[$t->id_pinjaman][] = $t;
+        }
+        
+        // Isi relasi transaksis pada setiap pinjaman dengan transaksi yang sudah difilter
+        // Jika tidak ada transaksi untuk pinjaman tertentu, akan kosong (empty collection)
+        foreach ($pinjaman as $p) {
+            $p->setRelation('transaksis', collect($pinjamanMap[$p->id] ?? []));
+        }
+        foreach ($pinjaman2 as $p) {
+            $p->setRelation('transaksis', collect($pinjamanMap[$p->id] ?? []));
+        }
+
         $agunan = Agunan::all();    
 
-        return view('transaksi.laporan', compact('transaksi','pinjaman','pinjaman2','agunan','detailtransaksi'));
+        return view('transaksi.laporan', compact('transaksis','pinjaman','pinjaman2','agunan'));
     }
 
     public function getPinjamanByJenis($jenispinjaman_id)

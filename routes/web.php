@@ -54,7 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaksi/view/{transaksi}', [TransaksiController::class, 'view'])->name('transaksi.view');
     Route::get('/get-pinjaman-by-jenis/{jenispinjaman_id}', [TransaksiController::class, 'getPinjamanByJenis'])->name('transaksi.getPinjamanByJenis');
     Route::post('/transaksi/agunan', [TransaksiController::class, 'storeAgunan'])->name('transaksi.agunan.store');
-    
+    // Route untuk mengubah status transaksi
+    Route::post('/transaksi/{transaksi}/toggle-status', [TransaksiController::class, 'toggleStatus']);
     Route::resource('detailtransaksi', DetailtransaksiController::class);
     Route::resource('biayacis', BiayacisController::class)->middleware('auth');
     Route::resource('biayacit', BiayacitController::class)->middleware('auth');

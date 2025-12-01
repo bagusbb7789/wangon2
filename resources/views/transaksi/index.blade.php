@@ -43,14 +43,6 @@
             </form>
             <form action="{{ route('transaksi.laporan') }}" method="GET" class="form-inline">
                 <div class="input-group">
-                    <select name="bulan" class="form-control me-2" required>
-                        <option value="">Pilih Bulan</option>
-                        @foreach(range(1, 12) as $b)
-                            <option value="{{ $b }}" {{ request('bulan') == $b ? 'selected' : '' }}>
-                                {{ DateTime::createFromFormat('!m', $b)->format('F') }}
-                            </option>
-                        @endforeach
-                    </select>
                     <select name="tahun" class="form-control me-2" required>
                         <option value="">Pilih Tahun</option>
                         @foreach(range(date('Y') - 5, date('Y')) as $y)
@@ -73,6 +65,7 @@
                         <th>Produk Pinjaman</th>
                         <th>Nomor Pinjaman</th>
                         <th>Nominal</th>
+                        <th>Status Pinjaman</th>
                         <th>Tambah Agunan</th>
                         <th>Aksi</th>
                     </tr>
@@ -86,6 +79,20 @@
                             <td>{{ optional($item->pinjaman)->nama_pinjaman ?? '-' }}</td>
                             <td>{{ $item->nomor_pinjaman }}</td>
                             <td>Rp{{ number_format($item->nominal, 0, ',', '.') }}</td>
+                            <td class="status-cell">
+                                @php
+                                    // Tentukan status berikutnya untuk toggle
+                                    $nextStatus = ($item->status == 'aktif') ? 'tidak aktif' : 'aktif';
+                                @endphp
+
+                                <span
+                                    class="status-toggle badge {{ $item->status == 'aktif' ? 'bg-success' : 'bg-danger' }}"
+                                    data-id="{{ $item->id }}" data-current-status="{{ $item->status }}"
+                                    data-next-status="{{ $nextStatus }}" style="cursor: pointer;"> {{-- Penting: ubah kursor
+                                    agar terlihat bisa diklik --}}
+                                    {{ ucwords($item->status) }}
+                                </span>
+                            </td>
                             <td>
                                 {{-- Menggunakan list-group untuk daftar agunan --}}
                                 @if($item->detailTransaksis->isNotEmpty())
@@ -101,33 +108,34 @@
                                                 </div>
                                                 <div>
 
-                                                {{-- Status Agunan dalam Badge yang menarik --}}
-                                                @php
-                                                    $statusClass = 'bg-secondary';
-                                                    $statusIcon = 'fas fa-info-circle';
-                                                    if (strtolower($detailtransaksi->status) == 'aktif') {
-                                                        $statusClass = 'bg-success';
-                                                        $statusIcon = 'fas fa-check-circle';
-                                                    } elseif (strtolower($detailtransaksi->status) == 'tidak aktif') {
-                                                        $statusClass = 'bg-warning text-dark';
-                                                        $statusIcon = 'fas fa-clock';
-                                                    } elseif (strtolower($detailtransaksi->status) == 'ditolak') {
-                                                        $statusClass = 'bg-danger';
-                                                        $statusIcon = 'fas fa-times-circle';
-                                                    }
-                                                @endphp
-                                                <span class="badge {{ $statusClass }} p-2">
-                                                    <i class="{{ $statusIcon }}"></i> 
-                                                </span>
-                                                <button type="button" class="btn btn-primary btn-sm p-1 ml-2" data-bs-toggle="modal"
-                                                    data-bs-target="#editDetailtransaksiModal"
-                                                    data-detail-id="{{ $detailtransaksi->id }}" data-transaksi-id="{{ $item->id }}"
-                                                    data-agunan-id="{{ $detailtransaksi->id_agunan }}"
-                                                    data-keterangan="{{ $detailtransaksi->keterangan }}"
-                                                    data-status="{{ $detailtransaksi->status }}"
-                                                    data-jenis-pinjaman="{{ optional($item->pinjaman)->id_jenispinjaman }}">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
+                                                    {{-- Status Agunan dalam Badge yang menarik --}}
+                                                    @php
+                                                        $statusClass = 'bg-secondary';
+                                                        $statusIcon = 'fas fa-info-circle';
+                                                        if (strtolower($detailtransaksi->status) == 'aktif') {
+                                                            $statusClass = 'bg-success';
+                                                            $statusIcon = 'fas fa-check-circle';
+                                                        } elseif (strtolower($detailtransaksi->status) == 'tidak aktif') {
+                                                            $statusClass = 'bg-warning text-dark';
+                                                            $statusIcon = 'fas fa-clock';
+                                                        } elseif (strtolower($detailtransaksi->status) == 'ditolak') {
+                                                            $statusClass = 'bg-danger';
+                                                            $statusIcon = 'fas fa-times-circle';
+                                                        }
+                                                    @endphp
+                                                    <span class="badge {{ $statusClass }} p-2">
+                                                        <i class="{{ $statusIcon }}"></i>
+                                                    </span>
+                                                    <button type="button" class="btn btn-primary btn-sm p-1 ml-2"
+                                                        data-bs-toggle="modal" data-bs-target="#editDetailtransaksiModal"
+                                                        data-detail-id="{{ $detailtransaksi->id }}"
+                                                        data-transaksi-id="{{ $item->id }}"
+                                                        data-agunan-id="{{ $detailtransaksi->id_agunan }}"
+                                                        data-keterangan="{{ $detailtransaksi->keterangan }}"
+                                                        data-status="{{ $detailtransaksi->status }}"
+                                                        data-jenis-pinjaman="{{ optional($item->pinjaman)->id_jenispinjaman }}">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -312,198 +320,280 @@
     </div>
 
     {{-- Modal Edit Detail Transaksi --}}
-<div class="modal fade" id="editDetailtransaksiModal" tabindex="-1" role="dialog"
-    aria-labelledby="editDetailTransaksiModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        {{-- Route action akan diisi oleh JavaScript karena kita butuh ID detail --}}
-        <form id="editForm" method="POST"> 
-            @csrf
-            @method('PUT') {{-- Menggunakan PUT untuk update --}}
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editDetailTransaksi">Edit Detail Agunan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" name="id_transaksi" id="edit_transaksi_id"> 
-                    
-                    <div class="form-group mb-3">
-                        <label for="edit_id_agunan">Jenis Agunan</label>
-                        <select name="id_agunan" id="edit_id_agunan" class="form-control" required>
-                            <option value="">-- Pilih Jenis Agunan --</option>
-                            {{-- Opsi akan diisi oleh JavaScript --}}
-                        </select>
+    <div class="modal fade" id="editDetailtransaksiModal" tabindex="-1" role="dialog"
+        aria-labelledby="editDetailTransaksiModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            {{-- Route action akan diisi oleh JavaScript karena kita butuh ID detail --}}
+            <form id="editForm" method="POST">
+                @csrf
+                @method('PUT') {{-- Menggunakan PUT untuk update --}}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editDetailTransaksi">Edit Detail Agunan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    
-                    <div class="form-group mb-3">
-                        <label for="edit_keterangan">Keterangan</label>
-                        <input type="text" name="keterangan" id="edit_keterangan" class="form-control" required>
-                    </div>
-                    
-                    <div class="form-group mb-3">
-                        <label for="edit_status">Status</label>
-                        <select name="status" id="edit_status" class="form-control" required>
-                           <option value="aktif" {{ (isset($data) && old('status', $data->status) == 'aktif') || (!isset($data) && old('status') === null) ? 'selected' : '' }}>
+                    <div class="modal-body">
+                        <input type="hidden" name="id_transaksi" id="edit_transaksi_id">
+
+                        <div class="form-group mb-3">
+                            <label for="edit_id_agunan">Jenis Agunan</label>
+                            <select name="id_agunan" id="edit_id_agunan" class="form-control" required>
+                                <option value="">-- Pilih Jenis Agunan --</option>
+                                {{-- Opsi akan diisi oleh JavaScript --}}
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="edit_keterangan">Keterangan</label>
+                            <input type="text" name="keterangan" id="edit_keterangan" class="form-control" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="edit_status">Status</label>
+                            <select name="status" id="edit_status" class="form-control" required>
+                                <option value="aktif" {{ (isset($data) && old('status', $data->status) == 'aktif') || (!isset($data) && old('status') === null) ? 'selected' : '' }}>
                                     Aktif
                                 </option>
 
                                 <option value="tidak aktif" {{ (isset($data) && old('status', $data->status) == 'tidak aktif') ? 'selected' : '' }}>
                                     Tidak Aktif
                                 </option>
-                        </select>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-warning">Update</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-warning">Update</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 
     <script>
-    // Ambil data agunan (semua) dari PHP dan ubah ke JSON
-    // Pastikan variabel $agunans disediakan oleh Controller Anda
-    var allAgunans = @json($agunans);
-    // Base URL untuk route update, akan dilengkapi dengan ID di JS
-    const updateRouteBase = '{{ url('detailtransaksi') }}';
+        // Ambil data agunan (semua) dari PHP dan ubah ke JSON
+        // Pastikan variabel $agunans disediakan oleh Controller Anda
+        var allAgunans = @json($agunans);
+        // Base URL untuk route update, akan dilengkapi dengan ID di JS
+        const updateRouteBase = '{{ url('detailtransaksi') }}';
 
-    document.addEventListener('DOMContentLoaded', function () {
-        // --- Elemen untuk Modal Tambah (addDetailtransaksi) ---
-        var addModalEl = document.getElementById('addDetailtransaksi');
-        var selectAgunan = document.getElementById('id_agunan');
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Elemen untuk Modal Tambah (addDetailtransaksi) ---
+            var addModalEl = document.getElementById('addDetailtransaksi');
+            var selectAgunan = document.getElementById('id_agunan');
 
-        // --- Elemen untuk Modal Edit (editDetailtransaksiModal) ---
-        var editModalEl = document.getElementById('editDetailtransaksiModal');
-        var editSelectAgunan = document.getElementById('edit_id_agunan');
-        var editForm = document.getElementById('editForm');
-        
-        // --- 1. Logika Modal Tambah (addDetailtransaksi) ---
-        if (addModalEl) {
-            
-            // Ketika modal akan dibuka
-            addModalEl.addEventListener('show.bs.modal', function (event) {
-                var button = event.relatedTarget;
-                var transaksiId = '';
-                var jenisPinjamanId = ''; 
+            // --- Elemen untuk Modal Edit (editDetailtransaksiModal) ---
+            var editModalEl = document.getElementById('editDetailtransaksiModal');
+            var editSelectAgunan = document.getElementById('edit_id_agunan');
+            var editForm = document.getElementById('editForm');
 
-                if (button) {
-                    // Ambil data dari tombol "Tambah Agunan"
-                    transaksiId = button.getAttribute('data-id') || button.dataset.id || '';
-                    jenisPinjamanId = button.getAttribute('data-jenis') || button.dataset.jenis || ''; 
-                }
+            // --- 1. Logika Modal Tambah (addDetailtransaksi) ---
+            if (addModalEl) {
 
-                // Set ID Transaksi
-                var input = document.getElementById('transaksi_id');
-                if (input) input.value = transaksiId;
+                // Ketika modal akan dibuka
+                addModalEl.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+                    var transaksiId = '';
+                    var jenisPinjamanId = '';
 
-                // --- LOGIKA FILTER AGUNAN (Tambah) ---
-                selectAgunan.innerHTML = '<option value="">-- Pilih Jenis Agunan --</option>'; // Reset opsi
-
-                // Filter agunan berdasarkan id_pinjaman yang sama dengan jenisPinjamanId
-                var filteredAgunans = allAgunans.filter(function (agunan) {
-                    // Gunakan == untuk membandingkan karena tipe data bisa berbeda (string vs number)
-                    return agunan.id_pinjaman == jenisPinjamanId;
-                });
-
-                // Isi dropdown dengan Agunan yang sudah difilter
-                filteredAgunans.forEach(function (agunan) {
-                    var option = document.createElement('option');
-                    option.value = agunan.id;
-                    option.textContent = agunan.nama_agunan;
-                    selectAgunan.appendChild(option);
-                });
-            });
-
-            // Bersihkan form saat modal ditutup
-            addModalEl.addEventListener('hidden.bs.modal', function () {
-                var form = addModalEl.querySelector('form');
-                if (form) form.reset();
-                var input = document.getElementById('transaksi_id');
-                if (input) input.value = '';
-                
-                // Mencegah double submit (jika diimplementasikan)
-                var submitBtn = addModalEl.querySelector('button[type="submit"]');
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = submitBtn.getAttribute('data-original-text') || 'Simpan';
-                }
-            });
-            
-            // Mencegah double submit pada modal tambah (opsional)
-            var addForm = document.getElementById('createForm');
-            if (addForm) {
-                var submitBtn = addForm.querySelector('button[type="submit"]');
-                if (submitBtn && !submitBtn.getAttribute('data-original-text')) {
-                    submitBtn.setAttribute('data-original-text', submitBtn.innerText);
-                }
-                addForm.addEventListener('submit', function () {
-                    if (submitBtn) {
-                        submitBtn.disabled = true;
-                        submitBtn.innerText = 'Mengirim...';
+                    if (button) {
+                        // Ambil data dari tombol "Tambah Agunan"
+                        transaksiId = button.getAttribute('data-id') || button.dataset.id || '';
+                        jenisPinjamanId = button.getAttribute('data-jenis') || button.dataset.jenis || '';
                     }
+
+                    // Set ID Transaksi
+                    var input = document.getElementById('transaksi_id');
+                    if (input) input.value = transaksiId;
+
+                    // --- LOGIKA FILTER AGUNAN (Tambah) ---
+                    selectAgunan.innerHTML = '<option value="">-- Pilih Jenis Agunan --</option>'; // Reset opsi
+
+                    // Filter agunan berdasarkan id_pinjaman yang sama dengan jenisPinjamanId
+                    var filteredAgunans = allAgunans.filter(function (agunan) {
+                        // Gunakan == untuk membandingkan karena tipe data bisa berbeda (string vs number)
+                        return agunan.id_pinjaman == jenisPinjamanId;
+                    });
+
+                    // Isi dropdown dengan Agunan yang sudah difilter
+                    filteredAgunans.forEach(function (agunan) {
+                        var option = document.createElement('option');
+                        option.value = agunan.id;
+                        option.textContent = agunan.nama_agunan;
+                        selectAgunan.appendChild(option);
+                    });
+                });
+
+                // Bersihkan form saat modal ditutup
+                addModalEl.addEventListener('hidden.bs.modal', function () {
+                    var form = addModalEl.querySelector('form');
+                    if (form) form.reset();
+                    var input = document.getElementById('transaksi_id');
+                    if (input) input.value = '';
+
+                    // Mencegah double submit (jika diimplementasikan)
+                    var submitBtn = addModalEl.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = submitBtn.getAttribute('data-original-text') || 'Simpan';
+                    }
+                });
+
+                // Mencegah double submit pada modal tambah (opsional)
+                var addForm = document.getElementById('createForm');
+                if (addForm) {
+                    var submitBtn = addForm.querySelector('button[type="submit"]');
+                    if (submitBtn && !submitBtn.getAttribute('data-original-text')) {
+                        submitBtn.setAttribute('data-original-text', submitBtn.innerText);
+                    }
+                    addForm.addEventListener('submit', function () {
+                        if (submitBtn) {
+                            submitBtn.disabled = true;
+                            submitBtn.innerText = 'Mengirim...';
+                        }
+                    });
+                }
+            }
+
+
+            // --- 2. Logika Modal Edit (editDetailtransaksiModal) ---
+            if (editModalEl) {
+
+                // Ketika modal akan dibuka
+                editModalEl.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+
+                    // Ambil semua data dari tombol
+                    const detailId = button.getAttribute('data-detail-id');
+                    const transaksiId = button.getAttribute('data-transaksi-id');
+                    const agunanId = button.getAttribute('data-agunan-id');
+                    const keterangan = button.getAttribute('data-keterangan');
+                    const status = button.getAttribute('data-status');
+                    const jenisPinjamanId = button.getAttribute('data-jenis-pinjaman');
+
+                    // 1. Isi form action (Route update membutuhkan ID Detail Transaksi)
+                    editForm.action = `${updateRouteBase}/${detailId}`;
+
+                    // 2. Isi hidden fields dan input lainnya
+                    document.getElementById('edit_transaksi_id').value = transaksiId;
+                    document.getElementById('edit_keterangan').value = keterangan;
+
+                    // 3. Set Status terpilih
+                    // Menggunakan toLowerCase() untuk memastikan kecocokan dengan value di <option>
+                    document.getElementById('edit_status').value = status.toLowerCase();
+
+                    // 4. Muat dan Set Jenis Agunan 
+                    editSelectAgunan.innerHTML = '<option value="">-- Pilih Jenis Agunan --</option>'; // Reset opsi
+
+                    // Filter agunan berdasarkan Jenis Pinjaman
+                    var filteredAgunans = allAgunans.filter(function (agunan) {
+                        return agunan.id_pinjaman == jenisPinjamanId;
+                    });
+
+                    // Isi dropdown dengan Agunan yang sudah difilter
+                    filteredAgunans.forEach(function (agunan) {
+                        var option = document.createElement('option');
+                        option.value = agunan.id;
+                        option.textContent = agunan.nama_agunan;
+
+                        // Set Agunan yang sudah tersimpan menjadi 'selected'
+                        if (agunan.id == agunanId) {
+                            option.selected = true;
+                        }
+
+                        editSelectAgunan.appendChild(option);
+                    });
+                });
+
+                // Bersihkan form saat modal ditutup
+                editModalEl.addEventListener('hidden.bs.modal', function () {
+                    // Reset form dan action
+                    editForm.reset();
+                    editForm.action = '#';
                 });
             }
-        }
 
+            // Cek apakah jQuery tersedia, jika tidak, Anda harus menggunakan fetch API.
+            if (typeof jQuery !== 'undefined') {
 
-        // --- 2. Logika Modal Edit (editDetailtransaksiModal) ---
-        if (editModalEl) {
-            
-            // Ketika modal akan dibuka
-            editModalEl.addEventListener('show.bs.modal', function (event) {
-                var button = event.relatedTarget;
-                
-                // Ambil semua data dari tombol
-                const detailId = button.getAttribute('data-detail-id');
-                const transaksiId = button.getAttribute('data-transaksi-id');
-                const agunanId = button.getAttribute('data-agunan-id');
-                const keterangan = button.getAttribute('data-keterangan');
-                const status = button.getAttribute('data-status');
-                const jenisPinjamanId = button.getAttribute('data-jenis-pinjaman');
+                // Tangkap klik pada setiap elemen dengan class 'status-toggle'
+                $(document).on('click', '.status-toggle', function () {
+                    const $badge = $(this);
+                    const transaksiId = $badge.data('id');
+                    const currentStatus = $badge.data('current-status');
+                    const nextStatus = $badge.data('next-status');
 
-                // 1. Isi form action (Route update membutuhkan ID Detail Transaksi)
-                editForm.action = `${updateRouteBase}/${detailId}`;
-
-                // 2. Isi hidden fields dan input lainnya
-                document.getElementById('edit_transaksi_id').value = transaksiId;
-                document.getElementById('edit_keterangan').value = keterangan;
-                
-                // 3. Set Status terpilih
-                // Menggunakan toLowerCase() untuk memastikan kecocokan dengan value di <option>
-                document.getElementById('edit_status').value = status.toLowerCase();
-
-                // 4. Muat dan Set Jenis Agunan 
-                editSelectAgunan.innerHTML = '<option value="">-- Pilih Jenis Agunan --</option>'; // Reset opsi
-                
-                // Filter agunan berdasarkan Jenis Pinjaman
-                var filteredAgunans = allAgunans.filter(function (agunan) {
-                    return agunan.id_pinjaman == jenisPinjamanId;
-                });
-                
-                // Isi dropdown dengan Agunan yang sudah difilter
-                filteredAgunans.forEach(function (agunan) {
-                    var option = document.createElement('option');
-                    option.value = agunan.id;
-                    option.textContent = agunan.nama_agunan;
-                    
-                    // Set Agunan yang sudah tersimpan menjadi 'selected'
-                    if (agunan.id == agunanId) {
-                        option.selected = true;
+                    // Konfirmasi perubahan status
+                    if (!confirm(`Yakin ingin mengubah status menjadi '${nextStatus.toUpperCase()}' untuk Transaksi ID: ${transaksiId}?`)) {
+                        return; // Batal jika pengguna menekan 'Cancel'
                     }
-                    
-                    editSelectAgunan.appendChild(option);
+
+                    // Tampilkan indikator loading sementara
+                    $badge.text('Loading...').removeClass('bg-success bg-danger bg-secondary').addClass('bg-warning text-dark');
+
+                    // Kirim permintaan AJAX ke Controller
+                    $.ajax({
+                        url: '{{ url('transaksi') }}/' + transaksiId + '/toggle-status', // Sesuaikan URL
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}', // Token CSRF wajib untuk POST/PUT
+                            status: nextStatus
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                // Update tampilan jika berhasil
+                                const newStatus = response.new_status;
+                                const newStatusDisplay = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+                                const newNextStatus = (newStatus === 'aktif') ? 'tidak aktif' : 'aktif';
+
+                                $badge.text(newStatusDisplay);
+                                $badge.removeClass('bg-warning text-dark');
+
+                                if (newStatus === 'aktif') {
+                                    $badge.addClass('bg-success');
+                                } else {
+                                    $badge.addClass('bg-danger');
+                                }
+
+                                // Perbarui data atribut untuk toggle berikutnya
+                                $badge.data('current-status', newStatus);
+                                $badge.data('next-status', newNextStatus);
+
+                                // Opsional: Tampilkan notifikasi sukses
+                                // Contoh: alert('Status berhasil diubah menjadi ' + newStatusDisplay);
+                            } else {
+                                // Kembalikan tampilan jika gagal
+                                $badge.text(currentStatus.charAt(0).toUpperCase() + currentStatus.slice(1));
+                                $badge.removeClass('bg-warning text-dark');
+                                if (currentStatus === 'aktif') {
+                                    $badge.addClass('bg-success');
+                                } else {
+                                    $badge.addClass('bg-danger');
+                                }
+                                alert('Gagal mengubah status: ' + (response.message || 'Terjadi kesalahan.'));
+                            }
+                        },
+                        error: function (xhr) {
+                            // Tangani error jaringan atau server
+                            // Kembalikan tampilan ke status awal
+                            $badge.text(currentStatus.charAt(0).toUpperCase() + currentStatus.slice(1));
+                            $badge.removeClass('bg-warning text-dark');
+                            if (currentStatus === 'aktif') {
+                                $badge.addClass('bg-success');
+                            } else {
+                                $badge.addClass('bg-danger');
+                            }
+
+                            let errorMessage = 'Gagal mengubah status. Silakan cek konsol.';
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                errorMessage = 'Error: ' + xhr.responseJSON.message;
+                            }
+                            alert(errorMessage);
+                            console.error('AJAX Error:', xhr);
+                        }
+                    });
                 });
-            });
-            
-            // Bersihkan form saat modal ditutup
-            editModalEl.addEventListener('hidden.bs.modal', function () {
-                // Reset form dan action
-                editForm.reset();
-                editForm.action = '#'; 
-            });
-        }
-    });
-</script>
+            }
+        });
+    </script>
     @stop

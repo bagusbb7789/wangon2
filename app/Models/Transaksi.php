@@ -31,6 +31,7 @@ class Transaksi extends Model
         'tanggal_pinjam',
         'tanggal_selesai',
         'nominal',
+        'status',
     ];
 
     /**
@@ -43,6 +44,53 @@ class Transaksi extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        /**
+         * Ketika model di-retrieve dari database, cek apakah tanggal_selesai sudah lewat.
+         * Jika ya, status otomatis menjadi 'tidak aktif'.
+         */
+        static::retrieved(function ($model) {
+            $model->updateStatusIfExpired();
+        });
+
+        /**
+         * Sebelum menyimpan, cek lagi status berdasarkan tanggal_selesai.
+         * Ini memastikan bahwa transaksi yang sudah melewati tanggal selesai
+         * tidak bisa disimpan dengan status 'aktif'.
+         */
+        static::saving(function ($model) {
+            $model->updateStatusIfExpired();
+        });
+    }
+
+    /**
+     * Helper method: periksa apakah tanggal_selesai sudah lewat.
+     * Jika ya, set status menjadi 'tidak aktif'.
+     * Method ini dipanggil otomatis oleh event listeners di boot().
+     */
+    public function updateStatusIfExpired()
+    {
+        if ($this->tanggal_selesai && \Carbon\Carbon::parse($this->tanggal_selesai)->isPast()) {
+            $this->status = 'tidak aktif';
+        }
+    }
+
+    /**
+     * Accessor: mengembalikan status terkini (apakah sudah expired atau tidak).
+     * Ini memastikan bahwa ketika mengakses $transaksi->status, selalu terperhitung
+     * apakah tanggal selesai sudah melewati hari ini.
+     */
+    public function getStatusAttribute($value)
+    {
+        if ($this->tanggal_selesai && \Carbon\Carbon::parse($this->tanggal_selesai)->isPast()) {
+            return 'tidak aktif';
+        }
+        return $value;
+    }
 
     public function detailTransaksis()
     {
