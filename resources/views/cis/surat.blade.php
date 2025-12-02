@@ -106,7 +106,7 @@
                 <div style="font-size:12pt">3. Nilai Pertanggungan</div>
             </td>
             <td>:</td>
-            <td colspan="3">{{$cis->nilai_pengangkutan}}</td>
+            <td colspan="3">Rp {{number_format($cis->nilai_pengangkutan ?? 0, 0, ',', '.')}}</td>
         </tr>
         <tr>
             <td style="width:200px">

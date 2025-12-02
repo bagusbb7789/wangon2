@@ -58,7 +58,7 @@
                 </tr>
                 <tr>
                     <th>3. Nilai Pertanggungan</th>
-                    <td>{{$cis->nilai_pengangkutan}}</td>
+                    <td>Rp. {{number_format($cis->nilai_pengangkutan ?? 0, 0, ',', '.')}}</td>
                 </tr>
                 <tr>
                     <th>4. Jangka Waktu</th>

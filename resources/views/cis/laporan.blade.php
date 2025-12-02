@@ -57,9 +57,9 @@
     <div>Tanggal: <strong> </strong></div>
 </div>
 
-<p style="text-transform: uppercase;">DAFTAR PENUTUPAN CASH IN SAVE (CIS) HARIAN</p>
-<p>BANK JATENG CAPEM WANGON</p>
-<p>PERIODE: <span style="text-transform: uppercase;"></span></p>
+<p style="text-transform: uppercase;margin-bottom: 0px;">DAFTAR PENUTUPAN CASH IN SAVE (CIS) HARIAN</p>
+<p style="margin-top: 0px";>BANK JATENG CAPEM WANGON</p>
+<p style="margin-top: 0px;">PERIODE: <span style="text-transform: uppercase;"></span></p>
 @php
     // Hitung total nilai_pengiriman
     $totalNilaiPengiriman = $cis->sum(function($row) {
