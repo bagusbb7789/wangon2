@@ -23,9 +23,12 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label for="id_pinjaman">Produk Pinjaman</label>
-                                <select name="id_pinjaman" id="id_pinjaman" class="form-control" required disabled>
+                                <select name="id_pinjaman" id="id_pinjaman" class="form-control @error('id_pinjaman') is-invalid @enderror" required disabled>
                                     <option value="">-- Pilih Jenis Pinjaman Terlebih Dahulu --</option>
                                 </select>
+                                @error('id_pinjaman')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -33,18 +36,24 @@
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label for="nomor_pinjaman">Nomor Pinjaman</label>
-                                <input type="text" name="nomor_pinjaman" id="nomor_pinjaman" class="form-control" required>
+                                <input type="text" name="nomor_pinjaman" id="nomor_pinjaman" class="form-control @error('nomor_pinjaman') is-invalid @enderror" value="{{ old('nomor_pinjaman') }}" required>
+                                @error('nomor_pinjaman')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label for="nomor_peminjam">Nomor CIF / Nasabah</label>
-                                <select id="nomor_peminjam" class="form-control" required>
+                                <select name="nomor_peminjam" id="nomor_peminjam" class="form-control @error('nomor_peminjam') is-invalid @enderror" required>
                                     <option value="">-- Pilih Nasabah --</option>
                                     @foreach ($nasabah as $item)
-                                        <option value="{{ $item->nocif }}">{{ $item->namanasabah }} - {{ $item->nocif }}</option>
+                                        <option value="{{ $item->nocif }}" {{ old('nomor_peminjam') == $item->nocif ? 'selected' : '' }}>{{ $item->namanasabah }} - {{ $item->nocif }}</option>
                                     @endforeach
                                 </select>
+                                @error('nomor_peminjam')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
@@ -64,7 +73,20 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="nominal">Nominal</label>
-                        <input type="number" step="0.01" name="nominal" id="nominal" class="form-control" required>
+                        <input type="number" step="0.01" name="nominal" id="nominal" class="form-control @error('nominal') is-invalid @enderror" value="{{ old('nominal') }}" required>
+                        @error('nominal')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="status">Status</label>
+                        <select name="status" id="status" class="form-control @error('status') is-invalid @enderror" required>
+                            <option value="aktif" {{ old('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                            <option value="tidak aktif" {{ old('status') == 'tidak aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                        </select>
+                        @error('status')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="mt-4">
                         <button type="submit" class="btn btn-primary">Simpan Transaksi</button>

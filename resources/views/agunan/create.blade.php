@@ -4,7 +4,7 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h1 class="mb-0">Create New Agunan</h1>
+                <h1 class="mb-0">Buat Data Agunan</h1>
             </div>
             <div class="card-body">
                 <form action="{{ route('agunan.store') }}" method="POST">

@@ -98,14 +98,16 @@ class TransaksiController extends Controller
         // Validasi data utama transaksi
         $request->validate([
             'id_pinjaman' => 'required|integer|exists:pinjaman,id',
+            'nomor_pinjaman' => 'required|string|max:255',
             'nomor_peminjam' => 'required|string|max:255',
             'tanggal_pinjam' => 'required|date',
             'tanggal_selesai' => 'required|date',
             'nominal' => 'required|numeric',
+            'status' => 'required|string|in:aktif,tidak aktif',
         ]);
 
         // Simpan data transaksi
-        Transaksi::create($request->all());
+        Transaksi::create($request->only(['id_pinjaman', 'nomor_pinjaman','nomor_peminjam', 'tanggal_pinjam', 'tanggal_selesai', 'nominal', 'status']));
 
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dibuat.');
     }
@@ -198,6 +200,15 @@ class TransaksiController extends Controller
         $transaksi->load(['pinjaman.jenispinjaman', 'detailTransaksis.agunan']);
 
         return view('transaksi.show', compact('transaksi'));
+    }
+
+    public function destroy(string $id)
+    {
+        // Find and delete the record
+        $pinjaman = Transaksi::findOrFail($id);
+        $pinjaman->delete();
+
+        return redirect()->route('transaksi.index')->with('success', 'Transasksi deleted successfully!');
     }
     public function laporan(Request $request)
     {
