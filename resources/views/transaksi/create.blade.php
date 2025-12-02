@@ -56,6 +56,22 @@
                                 @enderror
                             </div>
                         </div>
+
+                        <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet" />
+                        <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                // Inisialisasi tom-select untuk nasabah autocomplete
+                                new TomSelect('#nomor_peminjam', {
+                                    placeholder: '-- Pilih atau ketik Nasabah --',
+                                    searchField: ['text'],
+                                    maxOptions: null,
+                                    create: false,
+                                    allowEmptyOption: true,
+                                });
+                            });
+                        </script>
                     </div>
                     <div class="row">
                         <div class="col-md-6">

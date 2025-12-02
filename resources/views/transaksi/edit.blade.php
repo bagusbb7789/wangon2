@@ -59,14 +59,14 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <label for="nomor_peminjam">Nomor CIF / Nasabah</label>
-                            <select id="nomor_peminjam" class="form-control" required>
+                            <select name="nomor_peminjam" id="nomor_peminjam" class="form-control" required>
                                 <option value="">-- Pilih Nasabah --</option>
                                 @foreach ($nasabah as $item)
-                                    <option value="{{ $item->nocif }}">{{ $item->namanasabah }} - {{ $item->nocif }}</option>
+                                    <option value="{{ $item->nocif }}" {{ old('nomor_peminjam', $transaksi->nomor_peminjam) == $item->nocif ? 'selected' : '' }}>{{ $item->namanasabah }} - {{ $item->nocif }}</option>
                                 @endforeach
                             </select>
                         </div>
-                </div>
+                    </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group mb-3">
@@ -99,8 +99,20 @@
     </div>
 
     {{-- Script AJAX untuk memuat Produk Pinjaman tetap sama --}}
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Inisialisasi tom-select untuk nasabah autocomplete
+            new TomSelect('#nomor_peminjam', {
+                placeholder: '-- Pilih atau ketik Nasabah --',
+                searchField: ['text'],
+                maxOptions: null,
+                create: false,
+                allowEmptyOption: true,
+            });
+
             const jenisPinjamanSelect = document.getElementById('jenis_pinjaman_id');
             const pinjamanSelect = document.getElementById('id_pinjaman');
             
