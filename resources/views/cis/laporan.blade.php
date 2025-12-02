@@ -56,10 +56,14 @@
     <div>Lampiran Surat Nomor: <strong> </strong></div>
     <div>Tanggal: <strong> </strong></div>
 </div>
-
+@php
+    \Carbon\Carbon::setLocale('id');
+    $namaBulan = \Carbon\Carbon::createFromFormat('m', $bulan)->translatedFormat('F');
+@endphp
 <p style="text-transform: uppercase;margin-bottom: 0px;">DAFTAR PENUTUPAN CASH IN SAVE (CIS) HARIAN</p>
 <p style="margin-top: 0px";>BANK JATENG CAPEM WANGON</p>
-<p style="margin-top: 0px;">PERIODE: <span style="text-transform: uppercase;"></span></p>
+<p style="margin-top: 0px;">PERIODE: <span style="text-transform: uppercase;">{{ strtoupper($namaBulan) }}
+ {{ $tahun }}</span></p>
 @php
     // Hitung total nilai_pengiriman
     $totalNilaiPengiriman = $cis->sum(function($row) {
