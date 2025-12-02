@@ -97,8 +97,8 @@
         <tr>
             <td>{{ $loop->iteration }}</td>
             <td>Bank Jateng Capem Wangon</td>
-            <td>{{$item->asal_surat}}</td>
-            <td>{{$item->tujuan_surat}}</td>
+            <td>{{$item->tujuan_dari}}</td>
+            <td>{{$item->tujuan_ke}}</td>
             <td> {{ \Carbon\Carbon::parse($item->tanggal_pengajuan)->locale('id')->isoFormat('DD MMMM Y') }}</td>
             <td>
                 {{ (int) $item->petugas_polisi_bersenjata_api + (int) $item->petugas_polisi_brimob }}
