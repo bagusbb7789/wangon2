@@ -9,13 +9,18 @@
             width: 100%;
             border-collapse: collapse;
         }
-        th, td {
+        th {
             border: 1px solid black;
             padding: 5px;
             text-align: center;
         }
         th {
             background-color: #f2f2f2;
+        }
+        td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: center;
         }
         .highlight {
             background-color: #ffcccc;
@@ -183,7 +188,7 @@
         <tr>
             <td style="background-color:#ffcccc;">1</td>
             <td style="background-color:#ffcccc;"><b>KREDIT PRODUKTIF</b></td>
-            <td style="background-color:#ffcccc;"></td>
+            <td style="background-color:#ffcccc;">{{ $totalNoAProduktif }}</td>
             <td style="background-color:#ffcccc;"></td>
             <td style="background-color:#ffcccc;"></td>
             <td style="background-color:#ffcccc;"></td>
@@ -248,7 +253,7 @@
             @endphp
             <tr>
                 <td></td>
-                <td>{{ $pinjam2->nama_pinjaman }}</td>
+                <td style="text-align: left;">{{ $pinjam2->nama_pinjaman }}</td>
                 <td>{{ $noa > 0 ? $noa : '-' }}</td>
                 <td style="background-color:#ffcccc;"></td>
                 <td style="background-color:#ffcccc;"></td>
@@ -269,7 +274,7 @@
         <tr>
             <td style="background-color:#ffcccc;">2</td>
             <td style="background-color:#ffcccc;"><b>KREDIT KONSUMTIF</b></td>
-            <td style="background-color:#ffcccc;"></td>
+            <td style="background-color:#ffcccc;">{{ $totalNoAKonsumtif }}</td>
             {{-- Total Dokumen Agunan Konsumtif --}}
             <td style="background-color:#ffcccc;">{{ $totalDokKaripKons }}</td>
             <td style="background-color:#ffcccc;">{{ $totalDokSKTerakhirKons }}</td>
@@ -334,7 +339,7 @@
             @endphp
             <tr>
                 <td></td>
-                <td>{{ $pinjam->nama_pinjaman }}</td>
+                <td style="text-align: left;">{{ $pinjam->nama_pinjaman }}</td>
                 <td>
                    {{ $noakon > 0 ? $noakon : '-' }}
                 </td>
@@ -356,7 +361,7 @@
     <tfoot>
         <tr>
             <th colspan="2" style="text-align: right;">GRAND TOTAL</th>
-            <th></th> {{-- Jumlah NoA --}}
+            <th>{{ $totalNoAKonsumtif + $totalNoAProduktif }}</th> {{-- Jumlah NoA --}}
             <th>{{ $totalDokKaripKons }}</th>
             <th>{{ $totalDokSKTerakhirKons }}</th>
             <th>{{ $totalDokPKKons }}</th>
