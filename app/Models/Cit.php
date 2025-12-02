@@ -59,4 +59,9 @@ class Cit extends Model
     {
         return $this->hasMany(Biayacit::class, 'id_cit', 'id');
     }
+
+    public function pimpinan()
+    {
+        return $this->belongsTo(Pimpinan::class, 'id_pimpinan', 'id');
+    }
 }

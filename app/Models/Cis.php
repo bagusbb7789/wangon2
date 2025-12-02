@@ -69,4 +69,9 @@ class Cis extends Model
         return $this->hasMany(Biayacis::class, 'id_cis', 'id');
     }
 
+    public function pimpinan()
+    {
+        return $this->belongsTo(Pimpinan::class, 'id_pimpinan', 'id');
+    }
+
 }

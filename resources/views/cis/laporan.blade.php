@@ -104,15 +104,12 @@
         </td>
     </tr>
     <tr>
-        <td style="border: none; width: 40%; text-align: center;">
-            <br><br><br>
-            <u>KA Unit Pelayanan</u><br>
-            KA Unit Pelayanan
+        <td style="border: none; width: 50%; text-align: center;">
         </td>
-        <td style="border: none; width: 40%; text-align: center;">
-            <br><br><br>
-            <u>KA Unit Pemasaran</u><br>
-            KA Unit Pemasaran
+        <td style="border: none; width: 50%; text-align: center;">
+            <br><br><br><br>
+            <u>{{ $row->pimpinan->nama }}</u><br>
+            {{ $row->pimpinan->nama_jabatan }}
         </td>
     </tr>
 </table>

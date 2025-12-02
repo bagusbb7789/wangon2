@@ -297,26 +297,38 @@
     <p>Keterangan-keterangan tersebut diatas dibuat dengan sejujurnya dan sesuai dengan keadaan sebenarnya
         dan akan diguanakan sebagai dasar serta merupakan bagian dari polis yang diterbitkan</p>
     <p>Demikian kami sampaikan, konfirmasi dinantikan dalam waktu dekat dan terima kasih atas kerjasamanya</p>
-    <table class="form-table">
+    <table class="form-table-main" style="width: 100%; margin-top: 30px; text-align: center;">
         <tr>
-            <td style="width: 500px;"></td>
-            <td style="width: 500px; text-align: center;">PT. Bank Jateng</td>
+            <td style="width: 50%;"></td>
+            <td style="width: 50%;">PT BANK PEMBANGUNAN DAERAH</td>
         </tr>
         <tr>
-            <td style="width: 500px;"></td>
-            <td style="width: 500px; text-align: center;">Calon Tertanggung</td>
+            <td style="width: 50%;"></td>
+            <td style="width: 50%;">JAWA TENGAH</td>
         </tr>
         <tr>
-            <td style="width: 500px;"></td>
-            <td style="width: 500px; text-align: center;">
+            <td style="width: 50%;"></td>
+            <td style="width: 50%; height: 20px;">Cabang Pembantu Wangon</td>
+        </tr>
+        <tr>
+            <td style="width: 50%;"></td>
+            <td style="width: 50%;">
                 <button  class="noprint" onclick="window.print()" >
                     CETAK SEKARANG...
                 </button>
             </td>
         </tr>
-        <tr style="height: 150px;">
-            <td style="width: 500px;"></td>
-            <td style="width: 500px; text-align: center;">(…………………….)</td>
+        <tr style="height: 100px;">
+            <td style="width: 50%;"></td>
+            <td style="width: 50%;"></td>
+        </tr>
+        <tr>
+            <td style="width: 50%;"></td>
+            <td style="width: 50%;"><u>{{ $cis->pimpinan->nama }}</u></td>
+        </tr>
+        <tr>
+            <td style="width: 50%;"></td>
+            <td style="width: 50%;">{{ $cis->pimpinan->nama_jabatan }}</td>
         </tr>
     </table>
 </div>

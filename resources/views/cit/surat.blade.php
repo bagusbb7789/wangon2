@@ -168,7 +168,7 @@
             <td> {{ $cit->petugas_polisi_brimob }} Orang</td>
         </tr>
         <tr>
-            <td class="indented-content" colspan="3">Minimal 2 Orang anggota polisi</td>
+            <td class="indented-content" colspan="3">Minimal 2 Orang anggota polisi bersenjata api</td>
         </tr>
         </table>
 
@@ -177,11 +177,15 @@
     <table class="form-table">
         <tr>
             <td style="width: 500px;"></td>
-            <td style="width: 500px; text-align: center;">PT. Bank Jateng</td>
+            <td style="width: 500px; text-align: center;">PT BANK PEMBANGUNAN DAERAH</td>
         </tr>
         <tr>
             <td style="width: 500px;"></td>
-            <td style="width: 500px; text-align: center;">Calon Tertanggung</td>
+            <td style="width: 500px; text-align: center;">JAWA TENGAH</td>
+        </tr>
+        <tr>
+            <td style="width: 500px; height: 100px;"></td>
+            <td style="width: 500px; text-align: center; height: 100px;">Cabang Pembantu Wangon</td>
         </tr>
         <tr>
             <td style="width: 500px;"></td>
@@ -191,9 +195,13 @@
                 </button>
             </td>
         </tr>
-        <tr style="height: 150px;">
+        <tr >
             <td style="width: 500px;"></td>
-            <td style="width: 500px; text-align: center;">(…………………….)</td>
+            <td style="width: 500px; text-align: center;"><u>{{ $cit->pimpinan->nama }}</u></td>
+        </tr>
+        <tr>
+            <td style="width: 500px;"></td>
+            <td style="width: 500px; text-align: center;">{{ $cit->pimpinan->nama_jabatan }}</td>
         </tr>
     </table>
 </div>
