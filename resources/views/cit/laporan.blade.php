@@ -61,8 +61,8 @@
         </td>
     </tr>
 </table>
-<p>DAFTAR NOMINATIF CIT (CASH IN TRANSIT)</p>
-<p>BANK JATENG CAPEM WANGON PURWOKERTO</p>
+<p style="margin-bottom: 0px;">DAFTAR NOMINATIF CIT (CASH IN TRANSIT)</p>
+<p style="margin-top: 0px;">BANK JATENG CAPEM WANGON PURWOKERTO</p>
 @php
     \Carbon\Carbon::setLocale('id');
     $namaBulan = \Carbon\Carbon::createFromFormat('m', $bulan)->translatedFormat('F');

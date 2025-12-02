@@ -212,6 +212,7 @@
                 $hitungprod = 0;
                 $premiprod = 0;
                 
+                $noa = $pinjam2->transaksis->count();
                 // Akumulator SEMENTARA per jenis pinjaman $pinjam2
                 $totalPinjam2HitungProd = 0;
                 $totalPinjam2PremiProd = 0;
@@ -248,7 +249,7 @@
             <tr>
                 <td></td>
                 <td>{{ $pinjam2->nama_pinjaman }}</td>
-                <td>{{ $totalDetail2 > 0 ? $totalDetail2 : '-' }}</td>
+                <td>{{ $noa > 0 ? $noa : '-' }}</td>
                 <td style="background-color:#ffcccc;"></td>
                 <td style="background-color:#ffcccc;"></td>
                 <td style="background-color:#ffcccc;"></td>
@@ -299,6 +300,7 @@
                 $hitung = 0;
                 $premi = 0;
                 
+                $noakon = $pinjam->transaksis->count();
                 // Akumulator SEMENTARA per jenis pinjaman $pinjam
                 $totalPinjamHitung = 0;
                 $totalPinjamPremi = 0;
@@ -334,7 +336,7 @@
                 <td></td>
                 <td>{{ $pinjam->nama_pinjaman }}</td>
                 <td>
-                   {{ $totalDetail > 0 ? $totalDetail : '-' }}
+                   {{ $noakon > 0 ? $noakon : '-' }}
                 </td>
                 <td>{{ $totkarip > 0 ? $totkarip : '-'}}</td>
                 <td>{{ $totskterakhir > 0 ? $totskterakhir : '-'}}</td>

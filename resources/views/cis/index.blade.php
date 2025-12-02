@@ -212,7 +212,7 @@
 
                         <div class="form-group mb-3">
                             <label for="keterangan">Keterangan</label>
-                            <textarea name="keterangan" id="keterangan" class="form-control"></textarea>
+                            <textarea name="keterangan" id="keterangan" class="form-control">{{ old('keterangan', '-') }}</textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

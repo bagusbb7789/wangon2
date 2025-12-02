@@ -74,7 +74,7 @@
                     </tr>
                     <tr>
                         <th>7. Nilai Pengiriman</th>
-                        <td>{{ $cit->nilai_pengiriman }}</td>
+                        <td>Rp {{ number_format($cit->nilai_pengiriman ?? 0, 0, ',', '.') }}</td>
                     </tr>
                     <tr>
                         <th>8. Alat Angkut</th>

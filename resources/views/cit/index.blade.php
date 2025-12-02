@@ -229,7 +229,8 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="keterangan_biaya">Keterangan</label>
-                            <textarea name="keterangan" id="keterangan_biaya" class="form-control"></textarea>
+                            {{-- textarea tidak menggunakan atribut value; isi default harus ditaruh di antara tag --}}
+                            <textarea name="keterangan" id="keterangan_biaya" class="form-control">{{ old('keterangan', '-') }}</textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

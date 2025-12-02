@@ -4,30 +4,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Surat Permintaan Penutupan Asuransi Pengangkutan Uang</title>
-    <head>
+    
+    <style media="print">
+        .noprint{
+            display: none;
+        }
+    </style>
 
-        <!--membuat style tombol CETAK html-->
-        <style media="print">
-            .noprint{
-                display: none;
-            }
-        </style>
-
-    </head>
     <style type="text/css">
         body{
             font-size: 14pt;
             margin:auto;
             width: 960px;
-            font-family: Arial;
+            /* FONT DIUBAH KE TIMES NEW ROMAN */
+            font-family: "Times New Roman", Times, serif; 
         }
         table{
             font-size: 14pt;
             margin:auto;
-            font-family: Arial;
+            /* FONT DIUBAH KE TIMES NEW ROMAN */
+            font-family: "Times New Roman", Times, serif;
             width: 960px;
         }
+        
+        /* CSS Tambahan untuk Indentasi */
+        .form-table td {
+            vertical-align: top;
+            padding-top: 5px; 
+        }
+        
+        /* Style untuk membuat konten sub-poin menjorok */
+        .indented-content {
+            padding-left: 25px; /* Jarak indentasi */
+        }
     </style>
+</head>
 <body>
 
 <div class="container">
@@ -35,8 +46,8 @@
         <img src="{{ asset('images/askrida.png') }}" alt="Logo Perusahaan" style="width:170px; margin-bottom:5px;">
     </div>
 
-    <p style="text-align: center; font-size: 16pt; font-weight: bold; ">Surat Permintaan Penutupan Asuransi Pengangkutan Uang</p>
-    <p style="text-align: center; font-size: 16pt; font-weight: bold; ">Angkutan Jalan Raya</p>
+    <p style="text-align: center; font-size: 16pt; font-weight: bold; margin-bottom: 0px; ">Surat Permintaan Penutupan Asuransi Pengangkutan Uang</p>
+    <p style="text-align: center; font-size: 16pt; font-weight: bold; margin-top: 0px; margin-bottom: 10px;">Angkutan Jalan Raya</p>
 
     <table class="table" style="width: 100%; border: 1px solid black ; border-collapse: collapse;">
         <tr style="border: 1px solid black ; border-collapse: collapse;">
@@ -59,7 +70,7 @@
         </tr>
     </table>
 
-    <p>Bersama ini Kami mengajukan permohonan penutupan CIT Insurance dengan kondisi sebagai berikut :</p>
+    <p style="margin-top: 20px; margin-bottom: 10px;">Bersama ini Kami mengajukan permohonan penutupan CIT Insurance dengan kondisi sebagai berikut :</p>
 
     <table class="form-table">
         <tr>
@@ -85,22 +96,27 @@
         <tr>
             <td class="form-label">5. Tujuan</td>
             <td>:</td>
-            <td>Dari : {{ $cit->tujuan_dari }}</td>
-        </tr>
-        <tr>
             <td></td>
-            <td>:</td>
-            <td>Ke : {{ $cit->tujuan_ke }}</td>
         </tr>
         <tr>
-            <td class="form-label">  Jarak Tempuh</td>
+            <td class="indented-content">Dari</td>
+            <td>:</td>
+            <td>{{ $cit->tujuan_dari }}</td>
+        </tr>
+        <tr>
+            <td class="indented-content">Ke</td>
+            <td>:</td>
+            <td>{{ $cit->tujuan_ke }}</td>
+        </tr>
+        <tr>
+            <td class="form-label indented-content">Jarak Tempuh</td>
             <td>:</td>
             <td>{{$cit->jenis_pengiriman}} ± : {{ $cit->jarak_tempuh }} Km</td>
         </tr>
         <tr>
             <td class="form-label">6. Nilai Pengiriman</td>
             <td>:</td>
-            <td>{{ $cit->nilai_pengiriman }}</td>
+            <td>Rp {{ number_format($cit->nilai_pengiriman ?? 0, 0, ',', '.') }}</td>
         </tr>
         <tr>
             <td class="form-label">7. Alat Angkut</td>
@@ -108,12 +124,12 @@
             <td></td>
         </tr>
         <tr>
-            <td>Merk dan Jenis</td>
+            <td class="indented-content">Merk dan Jenis</td>
             <td>:</td>
             <td>{{ $cit->alat_angkut_merk }} / {{ $cit->alat_angkut_jenis }}</td>
         </tr>
         <tr>
-            <td>Nomor Mobil</td>
+            <td class="indented-content">Nomor Mobil</td>
             <td>:</td>
             <td>{{ $cit->alat_angkut_nomor }}</td>
         </tr>
@@ -128,12 +144,12 @@
             <td></td>
         </tr>
         <tr>
-            <td>a. Penanggung Jawab</td>
+            <td class="indented-content">a. Penanggung Jawab</td>
             <td>:</td>
             <td>{{ $cit->petugas_bank_penanggung_jawab }}</td>
         </tr>
         <tr>
-            <td>b. Staff/Satpam</td>
+            <td class="indented-content">b. Staff/Satpam</td>
             <td>:</td>
             <td>{{ $cit->petugas_bank_staff }} pelaksana {{ $cit->petugas_bank_driver }} driver {{ $cit->petugas_bank_satpam }} satpam</td>
         </tr>
@@ -142,21 +158,21 @@
             <td>:</td>
          </tr>
         <tr>
-            <td>a. Polisi</td>
+            <td class="indented-content">a. Polisi</td>
             <td>:</td>
             <td> {{ $cit->petugas_polisi_bersenjata_api }} Orang</td>
         </tr>
         <tr>
-            <td>b. Brimob</td>
+            <td class="indented-content">b. Brimob</td>
             <td>:</td>
             <td> {{ $cit->petugas_polisi_brimob }} Orang</td>
         </tr>
         <tr>
-            <td>Minimal 2 Orang anggota polisi</td>
+            <td class="indented-content" colspan="3">Minimal 2 Orang anggota polisi</td>
         </tr>
-    </table>
+        </table>
 
-    <p>Demikian kami sampaikan, konfirmasi dinantikan dalam waktu dekat dan terima kasih atas kerjasamanya.</p>
+    <p style="margin-top: 10px;">Demikian kami sampaikan, konfirmasi dinantikan dalam waktu dekat dan terima kasih atas kerjasamanya.</p>
 
     <table class="form-table">
         <tr>
