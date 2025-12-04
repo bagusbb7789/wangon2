@@ -220,7 +220,7 @@ class TransaksiController extends Controller
         $tanggalMulai = \Carbon\Carbon::createFromDate($tahun, 12, 31)->startOfDay();
         $transaksis = Transaksi::with(['pinjaman.jenispinjaman', 'detailTransaksis.agunan'])
             ->where('tanggal_selesai', '>', $tanggalMulai)
-            ->where('status', 'aktif')
+            ->where('status', 'Aktif')
             ->orderBy('tanggal_pinjam')
             ->get();
 

@@ -82,11 +82,11 @@
                             <td class="status-cell">
                                 @php
                                     // Tentukan status berikutnya untuk toggle
-                                    $nextStatus = ($item->status == 'aktif') ? 'tidak aktif' : 'aktif';
+                                    $nextStatus = ($item->status == 'Aktif') ? 'tidak aktif' : 'aktif';
                                 @endphp
 
                                 <span
-                                    class="status-toggle badge {{ $item->status == 'aktif' ? 'bg-success' : 'bg-danger' }}"
+                                    class="status-toggle badge {{ $item->status == 'Aktif' ? 'bg-success' : 'bg-danger' }}"
                                     data-id="{{ $item->id }}" data-current-status="{{ $item->status }}"
                                     data-next-status="{{ $nextStatus }}" style="cursor: pointer;"> {{-- Penting: ubah kursor
                                     agar terlihat bisa diklik --}}
